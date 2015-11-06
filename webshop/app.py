@@ -3,12 +3,12 @@ import MySQLdb
 
 app = Flask(__name__)
 
-# configuration
 HOST = 'localhost'
 DEBUG = True
 SECRET_KEY = 'IaWie5geraiciW6w'
-USERNAME = 'mystore'
-PASSWORD = 'mystore123'
+USERNAME = 'little-webshop'
+PASSWORD = ''
+DATABASE = 'little_webshop'
 
 def init_sqlite():
     """ Create a new database or clear the old one """
@@ -26,8 +26,8 @@ def init_mysql():
     g.db.commit()
 
 def get_db():
-    return MySQLdb.connect(host=HOST, port=2222, user=USERNAME, passwd=PASSWORD, db='mystoredb').cursor()
-    # return sqlite3.connect('mystore.db')
+    """  """
+    return MySQLdb.connect(host=HOST, port=2222, user=USERNAME, passwd=PASSWORD, db=DATABASE).cursor()
 
 
 @app.before_request
@@ -53,7 +53,7 @@ def teardown_request(exception):
 def home():
     """  """
     g.db = get_db()
-    result = g.db.execute('select firstname, lastname from entries order by id desc')
+    g.db.execute('select firstname, lastname from entries order by id desc')
     entries = g.db.fetchall()
     return render_template("home.html", entries=entries)
 
