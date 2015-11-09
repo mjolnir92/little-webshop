@@ -7,7 +7,7 @@ HOST = 'localhost'
 DEBUG = True
 SECRET_KEY = 'IaWie5geraiciW6w'
 USERNAME = 'little-webshop'
-PASSWORD = ''
+PASSWORD = 'little-webshop-password-123'
 DATABASE = 'little_webshop'
 
 def init_sqlite():
@@ -26,7 +26,6 @@ def init_mysql():
     g.db.commit()
 
 def get_db():
-    """  """
     return MySQLdb.connect(host=HOST, port=2222, user=USERNAME, passwd=PASSWORD, db=DATABASE).cursor()
 
 
@@ -76,6 +75,11 @@ def home_post():
 @app.route('/about')
 def about():
     return render_template('about.html')
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
 
 if __name__ == '__main__':
     app.secret_key = SECRET_KEY
