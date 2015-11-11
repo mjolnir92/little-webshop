@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<p>Please enter your details</p>
+
+<form action="." method="POST">
+    Login name:<br>
+    <input type="text" name="text-login">
+    <br>
+    Password:<br>
+    <input type="password" name="text-password">
+    <br>
+    First name:<br>
+    <input type="text" name="text-firstName">
+    <br>
+    Last name:<br>
+    <input type="text" name="text-lastName">
+    <br>
+    Street address:<br>
+    <input type="text" name="text-streetAddress">
+    <br>
+    Postal code:<br>
+    <input type="text" name="text-postCode">
+    <br>
+    Town:<br>
+    <input type="text" name="text-postTown">
+    <br>
+    Phone number:<br>
+    <input type="text" name="text-phoneNr">
+    <br>
+    E-mail address:<br>
+    <input type="text" name="text-email">
+    <br>
+    <input type="submit" name="button-save" value="Sign up">
+    <input type="submit" name="button-clear" value="Clear">
+</form>
+<br>
+<table class="entries" border="1">
+    <tr>
+        <th>login</th>
+        <th>password</th>
+    </tr>
+    {% for entry in entries %}
+    <tr>
+        <td>{{ entry[0] }}</td>
+        <td>{{ entry[1] }}</td>
+    </tr>
+    {% else %}
+
+    {% endfor %}
+</table>
+{% endblock %}

@@ -52,7 +52,7 @@ def teardown_request(exception):
 def home():
     """  """
     g.db = get_db()
-    g.db.execute('select firstname, lastname from entries order by id desc')
+    g.db.execute('select login, password from Customer order by idCustomer desc')
     entries = g.db.fetchall()
     return render_template("home.html", entries=entries)
 
@@ -62,12 +62,12 @@ def home_post():
     """  """
     if "button-save" in request.form:
         g.db = get_db()
-        g.db.execute('insert into entries (firstname, lastname) values (%s, %s)',
-                     [request.form['text-firstname'], request.form['text-lastname']])
+        g.db.execute('insert into Customer (login, password) values (%s, %s)',
+                     [request.form['text-login'], request.form['text-password']])
         g.db.connection.commit()
     elif "button-clear" in request.form:
         g.db = get_db()
-        g.db.execute('delete from entries')
+        g.db.execute('delete from Customer')
         g.db.connection.commit()
     return home()
 
@@ -80,6 +80,24 @@ def about():
 def login():
     return render_template('login.html')
 
+
+@app.route('/signup')
+def signup():
+    return render_template('signup.html')
+
+@app.route('/signup', methods=['POST'])
+def signup_post():
+    """  """
+    if "button-save" in request.form:
+        g.db = get_db()
+        g.db.execute('insert into Customer (login, password) values (%s, %s)',
+                     [request.form['text-login'], request.form['text-password']])
+        g.db.connection.commit()
+    elif "button-clear" in request.form:
+        g.db = get_db()
+        g.db.execute('delete from Customer')
+        g.db.connection.commit()
+    return signup()
 
 if __name__ == '__main__':
     app.secret_key = SECRET_KEY

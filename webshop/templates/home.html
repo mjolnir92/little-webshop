@@ -3,30 +3,5 @@
 {% block content %}
 
 <p>Hello world!</p>
-
-<form action="." method="POST">
-    First name:<br>
-    <input type="text" name="text-firstname">
-    <br>
-    Last name:<br>
-    <input type="text" name="text-lastname">
-    <br>
-    <input type="submit" name="button-save" value="Save">
-    <input type="submit" name="button-clear" value="Clear">
-</form>
 <br>
-<table class="entries" border="1">
-    <tr>
-        <th>Firstname</th>
-        <th>Lastname</th>
-    </tr>
-    {% for entry in entries %}
-    <tr>
-        <td>{{ entry[0] }}</td>
-        <td>{{ entry[1] }}</td>
-    </tr>
-    {% else %}
-
-    {% endfor %}
-</table>
 {% endblock %}
