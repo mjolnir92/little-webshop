@@ -2,6 +2,80 @@
 
 {% block content %}
 
-<p>Hello world!</p>
+<h2>Assets</h2>
+<table class="entries" border="0" cellpadding="10">
+    <td>
+        <h3>Add category</h3>
+
+        <form action="." method="POST">
+            Category name:<br>
+            <input type="text" name="text-categoryName">
+            <br>
+            <input type="submit" name="button-save-category" value="Add">
+            <input type="submit" name="button-clear-category" value="Clear all">
+        </form>
+    </td>
+    <br>
+    <td>
+        <h3>Add asset</h3>
+
+        <form action="." method="POST">
+            Asset name:<br>
+            <input type="text" name="text-name">
+            <br>
+            Category:<br>
+            <select name="select-category">
+                {% for row in category_rows %}
+                <option value="u'{{row['categoryName'].decode('utf-8')}}">{{row["categoryName"].decode('utf-8')}}
+                </option>
+                {% else %}
+                <option value="none"></option>
+                {% endfor %}
+            </select>
+            <br>
+            Price:<br>
+            <input type="text" name="text-price">
+            <br>
+            Amount in store:<br>
+            <input type="text" name="text-amountInStore">
+            <br>
+            Image address:<br>
+            <input type="text" name="text-imagePath">
+            <br>
+            <input type="submit" name="button-save-asset" value="Add">
+            <input type="submit" name="button-clear-asset" value="Clear all">
+        </form>
+    </td>
+</table>
+
 <br>
+{% for category in categorized_items %}
+<h3>{{ category[0].decode('utf-8').capitalize() }}</h3>
+<table class="entries" border="1" cellpadding="10">
+    <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Amount</th>
+        <th>Image</th>
+    </tr>
+    {% for category_asset in category[1] %}
+    <tr>
+        <td>{{ category_asset["name"].decode('utf-8').capitalize() }}</td>
+        <td>{{ category_asset["price"] }}</td>
+        <td>{{ category_asset["amountInStore"] }}</td>
+        <td>
+            <a href="{{category_asset['imagePath'].decode('utf-8')}}">
+                <img border="0"
+                     alt="{{ category_asset['name'].decode('utf-8') }}"
+                     src="{{category_asset['imagePath'].decode('utf-8')}}"
+                     height="100">
+            </a>
+        </td>
+    </tr>
+    {% else %}
+
+    {% endfor %}
+</table>
+{% endfor %}
+
 {% endblock %}

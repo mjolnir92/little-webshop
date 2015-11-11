@@ -2,8 +2,8 @@
 
 {% block content %}
 
+<h2>Sign up:</h2>
 <p>Please enter your details</p>
-
 <form action="." method="POST">
     Login name:<br>
     <input type="text" name="text-login">
@@ -33,18 +33,32 @@
     <input type="text" name="text-email">
     <br>
     <input type="submit" name="button-save" value="Sign up">
-    <input type="submit" name="button-clear" value="Clear">
+    <input type="submit" name="button-clear" value="Clear all">
 </form>
 <br>
 <table class="entries" border="1">
     <tr>
         <th>login</th>
         <th>password</th>
+        <th>firstName</th>
+        <th>lastName</th>
+        <th>streetAddress</th>
+        <th>postCode</th>
+        <th>postTown</th>
+        <th>phoneNr</th>
+        <th>email</th>
     </tr>
-    {% for entry in entries %}
+    {% for row in rows %}
     <tr>
-        <td>{{ entry[0] }}</td>
-        <td>{{ entry[1] }}</td>
+        <td>{{ row["login"].decode('utf-8') }}</td>
+        <td>{{ row["password"].decode('utf-8') }}</td>
+        <td>{{ row["firstName"].decode('utf-8') }}</td>
+        <td>{{ row["lastName"].decode('utf-8') }}</td>
+        <td>{{ row["streetAddress"].decode('utf-8') }}</td>
+        <td>{{ row["postCode"] }}</td>
+        <td>{{ row["postTown"].decode('utf-8') }}</td>
+        <td>{{ row["phoneNr"] }}</td>
+        <td>{{ row["email"].decode('utf-8') }}</td>
     </tr>
     {% else %}
 
