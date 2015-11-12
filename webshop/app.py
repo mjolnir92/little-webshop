@@ -34,28 +34,37 @@ def teardown_request(exception):
         print "DB was null!"
 
 
+def get_all_categories(db):
+    db.execute('select * from AssetCategory order by categoryName asc')
+    return db.fetchall()
+
+
+def get_category_id_from_name(db, categoryName):
+    db.execute('select idCategory from AssetCategory where categoryName=(%s)', [categoryName])
+    return db.fetchall()[0]['idCategory']
+
+
 @app.route('/about')
 def about():
-    return render_template('about.html')
+    db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
+    return render_template('about.html', category_rows=get_all_categories(db))
 
 
 @app.route("/")
 def home():
     db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
-    db.execute('select * from AssetCategory order by categoryName asc')
-    category_rows = db.fetchall()
+    all_category_rows = get_all_categories(db)
     categorized_items = []
-    for category_row in category_rows:
+    for category_row in all_category_rows:
         db.execute('select * from Asset where AssetCategory_idCategory=(%s)', [category_row["idCategory"]])
         assets_in_category = db.fetchall()
         categorized_items.append((category_row["categoryName"], assets_in_category))
-    return render_template('home.html', category_rows=category_rows, categorized_items=categorized_items)
+    return render_template('home.html', category_rows=get_all_categories(db), categorized_items=None)
+
 
 @app.route('/home_show/<categoryName>')
 def home_show(categoryName):
     db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
-    db.execute('select * from AssetCategory order by categoryName asc')
-    all_category_rows = db.fetchall()
     db.execute('select idCategory from AssetCategory where categoryName=(%s)', [categoryName])
     category_rows = db.fetchall()
     categorized_items = []
@@ -63,14 +72,14 @@ def home_show(categoryName):
         db.execute('select * from Asset where AssetCategory_idCategory=(%s)', [category_row["idCategory"]])
         assets_in_category = db.fetchall()
         categorized_items.append((categoryName, assets_in_category))
-    return render_template('home.html', category_rows=all_category_rows, categorized_items=categorized_items)
+    return render_template('home.html', category_rows=get_all_categories(db), categorized_items=categorized_items)
+
 
 @app.route('/home_add')
 def home_add():
     db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
-    db.execute('select * from AssetCategory order by categoryName asc')
-    all_category_rows = db.fetchall()
-    return render_template('home_add.html', category_rows=all_category_rows, categorized_items=None)
+    return render_template('home_add.html', category_rows=get_all_categories(db), categorized_items=None)
+
 
 @app.route('/', methods=['POST'])
 def home_post():
@@ -104,24 +113,32 @@ def home_post():
     return home()
 
 
-
 @app.route('/signin')
 def signin():
-    return render_template('signin.html')
+    print "show sign in"
+    db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
+    return render_template('signin.html', category_rows=get_all_categories(db))
+
+
+@app.route('/signin', methods=['POST'])
+def signin_post():
+    print "signing in..."
+    return signin()
 
 
 @app.route('/signup')
 def signup():
+    print "signup"
     db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
     db.execute('select * from Customer order by idCustomer desc')
     rows = db.fetchall()
-    return render_template('signup.html', rows=rows)
+    return render_template('signup.html', category_rows=get_all_categories(db), rows=rows)
 
 
 @app.route('/signup', methods=['POST'])
 def signup_post():
+    print "signuppost"
     db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
-    print("signup")
     statement_insert = 'insert into Customer ' \
                        '(login, password, firstName, lastName, streetAddress, postCode, postTown, phoneNr, email)' \
                        ' values ' \
@@ -148,4 +165,5 @@ def signup_post():
 
 if __name__ == '__main__':
     app.secret_key = SECRET_KEY
-    app.run(debug=True, host='127.0.0.1', port=5000)
+    app.run(debug=True, host='192.168.1.2', port=5000)
+    #app.run(debug=True, host='127.0.0.1', port=5000)

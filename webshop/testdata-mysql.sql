@@ -1,7 +1,10 @@
+USE `little_webshop` ;
 
 INSERT INTO AssetCategory (categoryName) VALUES ('fish');
 INSERT INTO AssetCategory (categoryName) VALUES ('bread');
 INSERT INTO AssetCategory (categoryName) VALUES ('vegetables');
+INSERT INTO AssetCategory (categoryName) VALUES ('meat');
+INSERT INTO AssetCategory (categoryName) VALUES ('dairy');
 
 INSERT INTO Asset (name, price, amountInStore, imagePath, AssetCategory_idCategory)
 VALUES ('Pike', 39, 23, 'http://loddea.hosterspace.com/wp-content/uploads/2011/09/Gädda.jpg',
@@ -55,6 +58,18 @@ INSERT INTO Asset (name, price, amountInStore, imagePath, AssetCategory_idCatego
 VALUES ('Cauliflower', 5, 111, 'http://www.portofruit.com/img/big/cauliflowers.jpg',
 (SELECT idCategory from AssetCategory WHERE categoryName='vegetables'));
 
+
+INSERT INTO Asset (name, price, amountInStore, imagePath, AssetCategory_idCategory)
+VALUES ('Butter', 35, 111, 'http://www.lchf.se/portals/0/butter.jpg',
+(SELECT idCategory from AssetCategory WHERE categoryName='dairy'));
+
+INSERT INTO Asset (name, price, amountInStore, imagePath, AssetCategory_idCategory)
+VALUES ('Milk', 15, 76, 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Milk_glass.jpg',
+(SELECT idCategory from AssetCategory WHERE categoryName='dairy'));
+
+INSERT INTO Asset (name, price, amountInStore, imagePath, AssetCategory_idCategory)
+VALUES ('Pork', 115, 11, 'https://dtgxwmigmg3gc.cloudfront.net/files/551a1067777a425ff901310b-icon-256x256.png',
+(SELECT idCategory from AssetCategory WHERE categoryName='meat'));
 
 
 INSERT INTO Customer (login, password, firstName, lastName, streetAddress, postCode, postTown, phoneNr, email)
