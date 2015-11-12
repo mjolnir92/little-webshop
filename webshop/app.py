@@ -42,31 +42,51 @@ def about():
 @app.route("/")
 def home():
     db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
-    db.execute('select * from AssetCategory order by idCategory desc')
+    db.execute('select * from AssetCategory order by categoryName asc')
     category_rows = db.fetchall()
     categorized_items = []
     for category_row in category_rows:
         db.execute('select * from Asset where AssetCategory_idCategory=(%s)', [category_row["idCategory"]])
         assets_in_category = db.fetchall()
-        categorized_items.append( (category_row["categoryName"], assets_in_category) )
+        categorized_items.append((category_row["categoryName"], assets_in_category))
     return render_template('home.html', category_rows=category_rows, categorized_items=categorized_items)
 
+@app.route('/home_show/<categoryName>')
+def home_show(categoryName):
+    db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
+    db.execute('select * from AssetCategory order by categoryName asc')
+    all_category_rows = db.fetchall()
+    db.execute('select idCategory from AssetCategory where categoryName=(%s)', [categoryName])
+    category_rows = db.fetchall()
+    categorized_items = []
+    for category_row in category_rows:
+        db.execute('select * from Asset where AssetCategory_idCategory=(%s)', [category_row["idCategory"]])
+        assets_in_category = db.fetchall()
+        categorized_items.append((categoryName, assets_in_category))
+    return render_template('home.html', category_rows=all_category_rows, categorized_items=categorized_items)
+
+@app.route('/home_add')
+def home_add():
+    db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
+    db.execute('select * from AssetCategory order by categoryName asc')
+    all_category_rows = db.fetchall()
+    return render_template('home_add.html', category_rows=all_category_rows, categorized_items=None)
 
 @app.route('/', methods=['POST'])
 def home_post():
     db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
+
     if "button-save-category" in request.form:
         db.execute('insert into AssetCategory (categoryName) values (%s)',
                    [request.form['text-categoryName']])
         db.connection.commit()
     if "button-save-asset" in request.form:
-        db.execute('select idCategory from AssetCategory where categoryName=(%s)',
-                   [request.form['select-category']])
+        db.execute('select idCategory from AssetCategory where categoryName=(%s)', [request.form['select-category']])
         idCategory = db.fetchall()[0]['idCategory']
-        db.execute( 'insert into Asset '
-                    '(name, price, amountInStore, imagePath, AssetCategory_idCategory)'
-                    ' values '
-                    '(%s, %s, %s, %s, %s)',
+        db.execute('insert into Asset '
+                   '(name, price, amountInStore, imagePath, AssetCategory_idCategory)'
+                   ' values '
+                   '(%s, %s, %s, %s, %s)',
                    [
                        request.form['text-name'],
                        request.form['text-price'],
@@ -77,10 +97,12 @@ def home_post():
         db.connection.commit()
     elif "button-clear-asset" in request.form:
         db.execute('delete from Asset')
+        db.connection.commit()
     elif "button-clear-category" in request.form:
         db.execute('delete from Category')
-    db.connection.commit()
+        db.connection.commit()
     return home()
+
 
 
 @app.route('/signin')

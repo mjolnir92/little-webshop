@@ -5,37 +5,7 @@
 <section class="article-wrap">
     <article>
         <h2>Assets</h2>
-
-
         <br>
-        {% for category in categorized_items %}
-        {% set cname = category[0].decode('utf-8') %}
-        <h3>{{ cname.capitalize() }}</h3>
-        <table class="entries" border="1" cellpadding="10">
-            <tr>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Amount</th>
-                <th>Image</th>
-            </tr>
-            {% for category_asset in category[1] %}
-            <tr>
-                <td>{{ category_asset["name"].decode('utf-8').capitalize() }}</td>
-                <td>{{ category_asset["price"] }}</td>
-                <td>{{ category_asset["amountInStore"] }}</td>
-                <td>
-                    <a href="{{category_asset['imagePath'].decode('utf-8')}}">
-                        <img border="0"
-                             alt="{{category_asset['name'].decode('utf-8')}}"
-                             src="{{category_asset['imagePath'].decode('utf-8')}}"
-                             height="100">
-                    </a>
-                </td>
-            </tr>
-            {% else %}
-            {% endfor %}
-        </table>
-        {% else %}
         <table class="entries" border="0" cellpadding="10">
             <td>
                 <h3>Add category</h3>
@@ -80,7 +50,6 @@
                 </form>
             </td>
         </table>
-        {% endfor %}
     </article>
 </section>
 <aside class="sidebar">

@@ -5,6 +5,27 @@ body {
   color: #444;
 }
 
+// Vars
+$sidebar-width: 200px;
+
+// The thing
+.article-wrap {
+  margin-right: $sidebar-width;
+}
+article,
+.sidebar {
+    float: right;
+}
+.sidebar {
+    box-sizing: border-box;
+    padding-left: 20px;
+    width: $sidebar-width;
+}
+
+table td, table td * {
+    vertical-align: top;
+}
+
 /*
  * Create dark grey header with a white logo
  */
@@ -59,7 +80,7 @@ h3 {
   font-size: 1.7em;
   font-weight: 100;
   margin-top: 20px;
-  text-align: center;
+  text-align: left;
   letter-spacing: -1px;
   color: #999;
 }
