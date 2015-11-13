@@ -1,7 +1,12 @@
-from flask import Flask, g, render_template, request
+from flask import Flask, g, render_template, request, flash, url_for, redirect
+from flask.ext.login import LoginManager, UserMixin, current_user, login_user, logout_user
+
 import MySQLdb as mdb
+from user import User
 
 app = Flask(__name__)
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 HOST = 'localhost'
 DEBUG = True
@@ -10,6 +15,9 @@ USERNAME = 'little-webshop'
 PASSWORD = 'little-webshop-password-123'
 DATABASE = 'little_webshop'
 
+@login_manager.user_loader
+def load_user(id):
+    return User.get(id)
 
 def connect_db():
     return mdb.connect(host=HOST, port=2222, user=USERNAME, passwd=PASSWORD, db=DATABASE)
@@ -23,6 +31,9 @@ def before_request():
     except Exception as e:
         print e
 
+@login_manager.user_loader
+def load_user(userid):
+	return User.get(userid)
 
 @app.teardown_request
 def teardown_request(exception):
@@ -80,6 +91,10 @@ def home_add():
     db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
     return render_template('home_add.html', category_rows=get_all_categories(db), categorized_items=None)
 
+@app.route('/remove', methods=['POST'])
+def remove():
+    print request.form['button-remove.x']
+    return home()
 
 @app.route('/', methods=['POST'])
 def home_post():
@@ -113,22 +128,31 @@ def home_post():
     return home()
 
 
-@app.route('/signin')
-def signin():
-    print "show sign in"
+@app.route('/login')
+def login():
     db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
-    return render_template('signin.html', category_rows=get_all_categories(db))
+    return render_template('login.html', category_rows=get_all_categories(db))
 
 
-@app.route('/signin', methods=['POST'])
-def signin_post():
-    print "signing in..."
-    return signin()
+@app.route('/login', methods=['POST'])
+def login_post():
+    user = User.get(request.form['text-username'])
+    if (user and user.password == request.form['text-password']):
+        login_user(user)
+        return home()
+    else:
+        return login()
+
+
+@app.route('/logout')
+def logout():
+    db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
+    logout_user()
+    return render_template('login.html', category_rows=get_all_categories(db))
 
 
 @app.route('/signup')
 def signup():
-    print "signup"
     db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
     db.execute('select * from Customer order by idCustomer desc')
     rows = db.fetchall()
@@ -137,7 +161,6 @@ def signup():
 
 @app.route('/signup', methods=['POST'])
 def signup_post():
-    print "signuppost"
     db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
     statement_insert = 'insert into Customer ' \
                        '(login, password, firstName, lastName, streetAddress, postCode, postTown, phoneNr, email)' \

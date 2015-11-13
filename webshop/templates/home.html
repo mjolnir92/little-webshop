@@ -16,23 +16,37 @@
             <th>Price</th>
             <th>Amount</th>
             <th>Image</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
+
         {% for category_asset in category[1] %}
+        {% set asset_name = category_asset['name'].decode('utf-8') %}
+        {% set asset_path = category_asset['imagePath'].decode('utf-8') %}
         <tr>
-            <td>{{ category_asset["name"].decode('utf-8').capitalize() }}</td>
+            <td>{{ asset_name.capitalize() }}</td>
             <td>{{ category_asset["price"] }}</td>
             <td>{{ category_asset["amountInStore"] }}</td>
             <td>
-                <a href="{{category_asset['imagePath'].decode('utf-8')}}">
+                <a href="{{asset_path}}">
                     <img border="0"
-                         alt="{{category_asset['name'].decode('utf-8')}}"
-                         src="{{category_asset['imagePath'].decode('utf-8')}}"
+                         alt="{{asset_name}}"
+                         src="{{asset_path}}"
                          height="100">
                 </a>
             </td>
+            <td>
+                <form action="{{ url_for('remove') }}" method="POST">
+                    <input type="image"
+                           src="{{ url_for('static', filename='images/close.png') }}"
+                           name="button-remove"
+                           class="btTxt submit"
+                           value="{{ category_asset['idAsset'] }}"/>
+                </form>
+            </td>
         </tr>
+
         {% else %}
         {% endfor %}
         </tbody>

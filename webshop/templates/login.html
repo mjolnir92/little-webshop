@@ -3,14 +3,14 @@
 {% block content %}
 
 <h2 class="sub-header">Sign in</h2>
-<form action="{{ url_for('signin') }}" method="POST">
+<form action="{{ url_for('login') }}" method="POST">
     User name:<br>
-    <input type="text" name="text-login">
+    <input type="text" name="text-username">
     <br>
     Password:<br>
     <input type="password" name="text-password">
     <br>
-    <input type="submit" name="button-login" value="Sign in">
+    <input type="submit" name="button-signin" value="Sign in">
 </form>
 <br>
 {% endblock %}
