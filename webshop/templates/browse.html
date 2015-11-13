@@ -3,10 +3,11 @@
 {% block content %}
 
 <div class="table-responsive">
-    {% set navCategoryName = categorized_items[0][0].decode('utf-8') %}
-    <h2 class="sub-header">{{ navCategoryName.capitalize() }}</h2>
+
+    <h2 class="sub-header">{{ nav_category_name.capitalize() }}</h2>
 
     <!-- This is the add table-->
+    {% if current_user.admin %}
     <table class="table table-striped">
         <thead>
         <tr>
@@ -19,14 +20,14 @@
         </tr>
         </thead>
         <tbody>
-        <form action="{{ url_for('.add_asset', categoryName=navCategoryName) }}" method="POST">
+        <form action="{{ url_for('.add_asset', categoryName=nav_category_name) }}" method="POST">
 
             <td><input type="text" name="text-name"></td>
             <td>
                 <select name="select-category">
-                    {% for row in category_rows %}
+                    {% for row in all_category_rows %}
                     {% set categoryName = row['categoryName']%}
-                    {% if categoryName == navCategoryName %}
+                    {% if categoryName == nav_category_name %}
                     <option value="{{categoryName}}" selected>{{categoryName}}</option>
                     {% else %}
                     <option value="{{categoryName}}">{{categoryName}}</option>
@@ -50,9 +51,10 @@
         </tbody>
         </form>
     </table>
+    {% endif %}
 
     <!-- This is the category listing table-->
-    {% if categorized_items and categorized_items[0][1] != () %}
+    {% if nav_category_asset_row_list and nav_category_asset_row_list != () %}
     <table class="table table-striped">
         <thead>
         <tr>
@@ -65,7 +67,7 @@
         </thead>
         <tbody>
 
-        {% for category_asset in category[1] %}
+        {% for category_asset in nav_category_asset_row_list %}
         {% set asset_name = category_asset['name'].decode('utf-8') %}
         {% set asset_id = category_asset['idAsset'] %}
         {% set asset_image = category_asset['imagePath'].decode('utf-8') %}
@@ -74,15 +76,17 @@
             <td>{{ category_asset["price"] }}</td>
             <td>{{ category_asset["amountInStore"] }}</td>
             <td>
-                <a href="{{asset_path}}">
+                <a href="{{asset_image}}">
                     <img border="0"
                          alt="{{asset_name}}"
                          src="{{asset_image}}"
                          height="100">
                 </a>
             </td>
+            <!-- Remove asset -->
+            {% if current_user.admin %}
             <td>
-                <form action="{{ url_for('.delete_asset', categoryName=category[0], idAsset=asset_id ) }}"
+                <form action="{{ url_for('.delete_asset', categoryName=nav_category_name, idAsset=asset_id ) }}"
                       method="POST">
                     <input type="image"
                            src="{{ url_for('static', filename='images/close.png') }}"
@@ -91,6 +95,7 @@
                            value="{{ asset_id }}"/>
                 </form>
             </td>
+            {% endif %}
         </tr>
         {% else %}
         {% endfor %}
@@ -104,7 +109,7 @@
 
     <br>
 
-    <form action="{{ url_for('.delete_category', categoryName=navCategoryName, idAssetCategory=category_id ) }}"
+    <form action="{{ url_for('.delete_category', categoryName=nav_category_name, idAssetCategory=nav_category_id ) }}"
           method="POST">
         Delete category
         <input type="image"

@@ -11,6 +11,7 @@ browse_page = Blueprint('browse_page', __name__, template_folder='templates')
 def display_category(categoryName=None, idAsset=None):
     db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
 
+    print "test"
     if not categoryName:
         db.execute('select * from AssetCategory limit 1')
         first_category = db.fetchall()
@@ -20,13 +21,13 @@ def display_category(categoryName=None, idAsset=None):
 
     db.execute('select idCategory from AssetCategory where categoryName=(%s)', [categoryName])
     category_id = db.fetchall()[0]["idCategory"]
-    categorized_items = []
     db.execute('select * from Asset where AssetCategory_idCategory=(%s)', [category_id])
     assets_in_category = db.fetchall()
-    categorized_items.append((categoryName, assets_in_category))
-    return render_template('browse.html', category_id=category_id,
-                           category_rows=get_all_categories(db), \
-                           categorized_items=categorized_items)
+    return render_template('browse.html',
+                           nav_category_id=category_id,
+                           nav_category_name=categoryName,
+                           nav_category_asset_row_list=assets_in_category,
+                           all_category_rows=get_all_categories(db))
 
 
 @browse_page.route('/browse/delete_asset/<categoryName>', defaults={'idAsset': None}, methods=['POST'])
@@ -53,6 +54,7 @@ def add_asset(categoryName):
     db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
     db.execute('select idCategory from AssetCategory where categoryName=(%s)', [request.form['select-category']])
     category_id = db.fetchall()[0]['idCategory']
+    print request.form
     db.execute('insert into Asset '
                '(name, price, amountInStore, imagePath, AssetCategory_idCategory)'
                ' values '

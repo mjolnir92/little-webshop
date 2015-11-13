@@ -11,7 +11,7 @@ def signup():
     db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
     db.execute('select * from Customer order by idCustomer desc')
     rows = db.fetchall()
-    return render_template('signup.html', category_rows=get_all_categories(db), rows=rows)
+    return render_template('signup.html', all_category_rows=get_all_categories(db), rows=rows)
 
 
 @signup_page.route('/signup', methods=['POST'])

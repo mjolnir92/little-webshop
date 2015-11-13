@@ -58,13 +58,13 @@ def teardown_request(exception):
 @app.route('/about')
 def about():
     db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
-    return render_template('about.html', category_rows=get_all_categories(db))
+    return render_template('about.html', all_category_rows=get_all_categories(db))
 
 
 @app.route("/")
 def home():
     db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
-    return render_template('home.html', category_rows=get_all_categories(db), categorized_items=None)
+    return render_template('home.html', all_category_rows=get_all_categories(db))
 
 if __name__ == '__main__':
     app.secret_key = SECRET_KEY

@@ -27,6 +27,7 @@
 
 <body>
 
+
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -62,26 +63,41 @@
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
-                {% if categorized_items %}
-                {% set category = categorized_items[0] %}
+
+                {% if current_user.admin and nav_category_name  %}
                 <li>
-                    <form action="{{ url_for('.add_asset_category', categoryName=category[0]) }}" method="POST">
-                        <input type="text"  name="text-categoryName">
+                    <form action="{{ url_for('.add_asset_category', categoryName=nav_category_name) }}" method="POST">
+                        <input type="text"
+                               name="text-categoryName"
+                               placeholder=" Add category...">
                         <input type="image"
                                src="{{ url_for('static', filename='images/add.png') }}"
                                name="button-remove"
                                class="btTxt submit"
-                               value="{{ asset_id }}"/>
+                               value="{{ nav_category_id }}"/>
                     </form>
                 </li>
+                <br>
                 {% endif %}
-                {% for category in category_rows %}
+
+                {% for category in all_category_rows %}
+
                 {% set cname = category['categoryName'].decode('utf-8')%}
-                <li>
+                {% if cname == nav_category_name%}
+                <li class="active">
                     <a href="{{url_for('browse_page.display_category', categoryName=cname) }}">
-                        {{ cname.capitalize() }}
+                        {{ cname.capitalize()
+                        }}
                     </a>
                 </li>
+                {% else %}
+                <li>
+                    <a href="{{url_for('browse_page.display_category', categoryName=cname) }}">
+                        {{ cname.capitalize()
+                        }}
+                    </a>
+                </li>
+                {% endif %}
                 {% else %}
                 {% endfor %}
             </ul>

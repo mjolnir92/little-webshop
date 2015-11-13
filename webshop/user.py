@@ -19,6 +19,7 @@ class User(UserMixin):
             raise UserNotFoundError()
         self.id = id
         self.password = entries[0]['password']
+        self.admin = True
 
     @classmethod
     def get(self, id):

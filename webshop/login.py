@@ -11,7 +11,7 @@ login_page = Blueprint('login_page', __name__, template_folder='templates')
 @login_page.route('/login')
 def login(show_message=False):
     db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
-    return render_template('login.html', category_rows=get_all_categories(db), show_message=show_message)
+    return render_template('login.html', all_category_rows=get_all_categories(db), show_message=show_message)
 
 
 @login_page.route('/login', methods=['POST'])
@@ -29,4 +29,4 @@ def login_post():
 def logout():
     db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
     logout_user()
-    return render_template('login.html', category_rows=get_all_categories(db))
+    return render_template('login.html', all_category_rows=get_all_categories(db))
