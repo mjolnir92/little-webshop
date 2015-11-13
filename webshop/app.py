@@ -129,9 +129,9 @@ def home_post():
 
 
 @app.route('/login')
-def login():
+def login(show_message=False):
     db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
-    return render_template('login.html', category_rows=get_all_categories(db))
+    return render_template('login.html', category_rows=get_all_categories(db), show_message=show_message)
 
 
 @app.route('/login', methods=['POST'])
@@ -141,7 +141,7 @@ def login_post():
         login_user(user)
         return home()
     else:
-        return login()
+        return login(show_message=True)
 
 
 @app.route('/logout')
@@ -188,5 +188,5 @@ def signup_post():
 
 if __name__ == '__main__':
     app.secret_key = SECRET_KEY
-    app.run(debug=True, host='192.168.1.2', port=5000)
-    #app.run(debug=True, host='127.0.0.1', port=5000)
+    # app.run(debug=True, host='192.168.1.2', port=5000)
+    app.run(debug=True, host='127.0.0.1', port=5000)
