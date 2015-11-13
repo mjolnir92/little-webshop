@@ -2,18 +2,18 @@
 
 {% block content %}
 
-<h2 class="sub-header">Sign in</h2>
-{% if show_message %}
-<font color="red">Wrong username or password!</font>
-{% endif %}
-<form action="{{ url_for('login') }}" method="POST">
-    User name:<br>
-    <input type="text" name="text-username">
-    <br>
-    Password:<br>
-    <input type="password" name="text-password">
-    <br>
-    <input type="submit" name="button-signin" value="Sign in">
+<form action="{{ url_for('.login') }}" method="POST" class="form-signin">
+    <h2 class="form-signin-heading">Sign in</h2>
+    {% if show_message %}
+    <font color="red">Wrong username or password!</font>
+    {% endif %}
+    <label for="inputEmail" class="sr-only">User name</label>
+    <input type="text" name="text-username" id="inputEmail" class="form-control" placeholder="User name" required
+           autofocus>
+    <label for="inputPassword" class="sr-only">Password</label>
+    <input type="password" name="text-password" id="inputPassword" class="form-control" placeholder="Password" required>
+
+    <!--<div class="checkbox"><label> <input type="checkbox" value="remember-me"> Remember me </label></div>-->
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
 </form>
-<br>
 {% endblock %}

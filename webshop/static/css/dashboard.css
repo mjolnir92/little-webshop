@@ -65,7 +65,10 @@ body {
   color: #fff;
   background-color: #428bca;
 }
-
+.nav-sidebar input[type="text"] {
+  margin-left: 15px;
+  max-width: 140px;
+}
 
 /*
  * Main content

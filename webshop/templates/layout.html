@@ -16,6 +16,7 @@
 
     <!-- Custom styles for this template -->
     <link href="{{ url_for('static', filename='css/dashboard.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/signin.css') }}" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -44,11 +45,11 @@
                 <li><a href="{{ url_for('about') }}">About</a></li>
 
                 {% if current_user.is_authenticated %}
-                <li> <a href="#">{{ current_user.id }}</a></li>
-                <li><a href="{{ url_for('logout') }}">Sign out</a></li>
+                <li><a href="#">{{ current_user.id }}</a></li>
+                <li><a href="{{ url_for('login_page.logout') }}">Sign out</a></li>
                 {% else %}
-                <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
-                <li><a href="{{ url_for('login') }}">Sign In</a></li>
+                <li><a href="{{ url_for('signup_page.signup') }}">Sign Up</a></li>
+                <li><a href="{{ url_for('login_page.login') }}">Sign In</a></li>
                 {% endif %}
             </ul>
             <form class="navbar-form navbar-right">
@@ -61,15 +62,23 @@
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
+                {% if categorized_items %}
+                {% set category = categorized_items[0] %}
                 <li>
-                    <a href="{{ url_for('home_add') }}">
-                        <i> Add... </i>
-                    </a>
+                    <form action="{{ url_for('.add_asset_category', categoryName=category[0]) }}" method="POST">
+                        <input type="text"  name="text-categoryName">
+                        <input type="image"
+                               src="{{ url_for('static', filename='images/add.png') }}"
+                               name="button-remove"
+                               class="btTxt submit"
+                               value="{{ asset_id }}"/>
+                    </form>
                 </li>
+                {% endif %}
                 {% for category in category_rows %}
                 {% set cname = category['categoryName'].decode('utf-8')%}
                 <li>
-                    <a href="{{url_for('home_show', categoryName=cname) }}">
+                    <a href="{{url_for('browse_page.display_category', categoryName=cname) }}">
                         {{ cname.capitalize() }}
                     </a>
                 </li>
