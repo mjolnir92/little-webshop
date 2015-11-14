@@ -1,0 +1,14 @@
+<select name="select-category">
+    {% for row in all_category_rows %}
+    {% set category_name = row['categoryName']%}
+    {% set category_id = row['idCategory']%}
+    {% if category_id|int == nav_category_id|int %}
+    asdf
+    <option value="{{category_id}}" selected>{{category_name}}</option>
+    {% else %}
+    <option value="{{category_id}}">{{category_name}}</option>
+    {% endif %}
+    {% else %}
+    <option value="none"></option>
+    {% endfor %}
+</select>

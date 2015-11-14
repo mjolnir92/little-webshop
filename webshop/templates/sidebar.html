@@ -1,0 +1,39 @@
+<div class="col-sm-3 col-md-2 sidebar">
+    <ul class="nav nav-sidebar">
+
+        {% if current_user.admin and nav_category_name %}
+        <li>
+            <form action="{{ url_for('.add_asset_category', category_id=nav_category_id) }}" method="POST">
+                <input type="text"
+                       name="text-category_name"
+                       placeholder=" Add category...">
+                <input type="image"
+                       src="{{ url_for('static', filename='images/add.png') }}"
+                       name="button-remove"
+                       class="btTxt submit"
+                       value="{{ nav_category_id }}"/>
+            </form>
+        </li>
+        <br>
+        {% endif %}
+
+        {% for category in all_category_rows %}
+
+        {% set category_name = category['categoryName'].decode('utf-8')%}
+        {% set category_id = category['idCategory']%}
+
+        {% if nav_category_id and category_id|int == nav_category_id|int %}
+        <li class="active">
+            {% else %}
+        <li>
+            {% endif %}
+
+            <a href="{{url_for('browse_page.display_category', category_id=category_id, order_by='name', order='asc') }}">
+                {{ category_name.capitalize() }}
+            </a>
+        </li>
+
+        {% else %}
+        {% endfor %}
+    </ul>
+</div>

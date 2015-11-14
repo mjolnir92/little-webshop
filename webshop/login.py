@@ -18,7 +18,7 @@ def login(show_message=False):
 def login_post():
     print "post"
     user = User.get(request.form['text-username'])
-    if (user and user.password == request.form['text-password']):
+    if user and user.password == request.form['text-password']:
         login_user(user)
         return redirect(url_for('home'))
     else:

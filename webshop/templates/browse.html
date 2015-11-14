@@ -4,125 +4,31 @@
 
 <div class="table-responsive">
 
-    <h2 class="sub-header">{{ nav_category_name.capitalize() }}</h2>
-
-    <!-- This is the add table-->
-    {% if current_user.admin %}
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Price</th>
-            <th>Amount</th>
-            <th>Image</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <form action="{{ url_for('.add_asset', categoryName=nav_category_name) }}" method="POST">
-
-            <td><input type="text" name="text-name"></td>
-            <td>
-                <select name="select-category">
-                    {% for row in all_category_rows %}
-                    {% set categoryName = row['categoryName']%}
-                    {% if categoryName == nav_category_name %}
-                    <option value="{{categoryName}}" selected>{{categoryName}}</option>
-                    {% else %}
-                    <option value="{{categoryName}}">{{categoryName}}</option>
-                    {% endif %}
-                    {% else %}
-                    <option value="none"></option>
-                    {% endfor %}
-                </select>
-            </td>
-
-            <td><input type="text" name="text-price"></td>
-            <td><input type="text" name="text-amountInStore"></td>
-            <td><input type="text" name="text-imagePath"></td>
-            <td>
-                <input type="image"
-                       src="{{ url_for('static', filename='images/add.png') }}"
-                       name="button-remove"
-                       class="btTxt submit"
-                       value="{{ asset_id }}"/>
-            </td>
-        </tbody>
-        </form>
-    </table>
+    {% if error_message %}
+    <br>
+    <font color="red">{{error_message}}</font>
     {% endif %}
 
-    <!-- This is the category listing table-->
-    {% if nav_category_asset_row_list and nav_category_asset_row_list != () %}
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Amount</th>
-            <th>Image</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
+    {% set category_not_empty = nav_category_asset_row_list and nav_category_asset_row_list != () %}
 
-        {% for category_asset in nav_category_asset_row_list %}
-        {% set asset_name = category_asset['name'].decode('utf-8') %}
-        {% set asset_id = category_asset['idAsset'] %}
-        {% set asset_image = category_asset['imagePath'].decode('utf-8') %}
-        <tr>
-            <td>{{ asset_name.capitalize() }}</td>
-            <td>{{ category_asset["price"] }}</td>
-            <td>{{ category_asset["amountInStore"] }}</td>
-            <td>
-                <a href="{{asset_image}}">
-                    <img border="0"
-                         alt="{{asset_name}}"
-                         src="{{asset_image}}"
-                         height="100">
-                </a>
-            </td>
-            <!--Basket-->
-            <td>
-                <form action="{{ url_for('.delete_asset', categoryName=nav_category_name, idAsset=asset_id ) }}">
-                    <button class="btn btn-primary" type="submit">Add to basket</button>
-                </form>
-            </td>
-            <!-- Remove asset -->
-            {% if current_user.admin %}
-            <td>
-                <form action="{{ url_for('.delete_asset', categoryName=nav_category_name, idAsset=asset_id ) }}"
-                      method="POST">
-                    <input type="image"
-                           src="{{ url_for('static', filename='images/close.png') }}"
-                           name="button-remove"
-                           class="btTxt submit"
-                           value="{{ asset_id }}"/>
-                </form>
-            </td>
-            {% endif %}
-        </tr>
-        {% else %}
-        {% endfor %}
-        </tbody>
+    <h2 class="sub-header">{{ nav_category_name.capitalize() }}</h2>
 
-    </table>
+    {% if current_user.admin %}
+    <form action="{{ url_for('.delete_category', category_id=nav_category_id ) }}" method="POST">
+        <button class="btn btn-danger" type="submit">Remove category</button>
+    </form>
+    {% include 'browse_listing_admin.html' %}
+
+    {% elif category_not_empty %}
+    {% include 'browse_listing.html' %}
+
 
     {% else %}
     This category is empty.
-    <br>
 
-    <form action="{{ url_for('.delete_category', categoryName=nav_category_name, idAssetCategory=nav_category_id ) }}"
-          method="POST">
-        Delete category
-        <input type="image"
-               src="{{ url_for('static', filename='images/close.png') }}"
-               name="button-remove"
-               class="btTxt submit"
-               value=""/>
-    </form>
+
     {% endif %}
+
 
 </div>
 

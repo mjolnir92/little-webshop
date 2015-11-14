@@ -1,0 +1,32 @@
+<table class="table table-striped">
+
+    {% include 'browse_listing_header.html' %}
+    <tbody>
+    <!--Asset data-->
+    {% for category_asset in nav_category_asset_row_list %}
+    {% set asset_name = category_asset['name'].decode('utf-8') %}
+    {% set asset_id = category_asset['idAsset'] %}
+    {% set asset_image = category_asset['imagePath'].decode('utf-8') %}
+    <tr>
+        <td><b>{{ asset_name.capitalize() }}</b></td>
+        <td>{{ category_asset["price"] }} kr</td>
+        <td>{{ category_asset["amountInStore"] }}</td>
+        <td>
+            <a href="{{asset_image}}">
+                <img border="0"
+                     alt="{{asset_name}}"
+                     src="{{asset_image}}"
+                     height="100">
+            </a>
+        </td>
+        <!--Basket-->
+        <td style="text-align:right">
+            <form action=".">
+                <button class="btn btn-primary" type="submit">Add to basket</button>
+            </form>
+        </td>
+    </tr>
+    {% else %}
+    {% endfor %}
+    </tbody>
+</table>

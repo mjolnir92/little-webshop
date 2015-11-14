@@ -1,0 +1,78 @@
+<table class="table table-striped">
+
+    {% include 'browse_listing_header.html' %}
+    <tbody>
+    <tr>
+        <form action="{{ url_for('.add_asset', category_id=nav_category_id) }}" method="POST">
+
+            <td height="120"><input size="12" type="text" name="text-name"></td>
+            <td>{% include 'browse_category_selector.html' %}</td>
+            <td><input size="5" type="text" name="text-price"></td>
+            <td><input size="5" type="text" name="text-amountInStore"></td>
+            <td><input type="text" name="text-imagePath"></td>
+
+            <td style="text-align:right">
+                <form action="{{ url_for('.add_asset', category_id=nav_category_id) }}">
+                    <button style="width:8em;" class="btn btn-success" type="submit">Add item</button>
+                </form>
+            </td>
+        </form>
+    </tr>
+    <!--Asset data-->
+    {% for category_asset in nav_category_asset_row_list %}
+    {% set asset_name = category_asset['name'].decode('utf-8') %}
+    {% set asset_id = category_asset['idAsset'] %}
+    {% set asset_price = category_asset['price'] %}
+    {% set asset_amount = category_asset['amountInStore'] %}
+    {% set asset_image = category_asset['imagePath'].decode('utf-8') %}
+    <tr>
+        <form action="{{ url_for('.update_asset', category_id=nav_category_id, asset_id=asset_id ) }}" method="POST">
+            <td><input size="12" type="text" name="text-name" value="{{ asset_name.capitalize() }}"></td>
+
+            <td>{% include 'browse_category_selector.html' %}</td>
+
+            <td><input size="5" type="text" name="text-price" value="{{ asset_price }}"></td>
+            <td><input size="5" type="text" name="text-amountInStore" value="{{ asset_amount }}"></td>
+
+            <td>
+                <input type="text" name="text-imagePath" value="{{ asset_image }}">
+                <br>
+                <a href="{{asset_image}}">
+                    <img border="0"
+                         alt="{{asset_name}}"
+                         src="{{asset_image}}"
+                         height="100">
+                </a>
+            </td>
+            <!--Update asset button -->
+            <td style="text-align:right">
+                <button style="width:8em;" class="btn btn-warning" type="submit">Update</button>
+
+                <br>
+                <br>
+
+                <!--Basket button-->
+                <form action="">
+                    <button style="width:8em;" class="btn btn-primary" type="submit">Add to basket</button>
+                </form>
+
+                <br>
+                <br>
+
+                <!-- Remove asset button -->
+                <form action="{{ url_for('.delete_asset', category_id=nav_category_id, asset_id=asset_id ) }}"
+                      method="POST">
+                    <button style="width:8em;" class="btn btn-danger" type="submit">Remove</button>
+                </form>
+            </td>
+        </form>
+
+
+        </form>
+        </td>
+
+    </tr>
+    {% else %}
+    {% endfor %}
+    </tbody>
+</table>
