@@ -11,7 +11,7 @@
 
     {% set category_not_empty = nav_category_asset_row_list and nav_category_asset_row_list != () %}
 
-    <h2 class="sub-header">{{ nav_category_name.capitalize() }}</h2>
+    <h2 class="sub-header">{{ nav_category_name.decode('utf-8').capitalize() }}</h2>
 
     {% if current_user.admin %}
     <form action="{{ url_for('.delete_category', category_id=nav_category_id ) }}" method="POST">
