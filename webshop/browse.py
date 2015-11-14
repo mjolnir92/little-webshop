@@ -21,7 +21,7 @@ def display_category(categoryName=None, idAsset=None):
 
     db.execute('select idCategory from AssetCategory where categoryName=(%s)', [categoryName])
     category_id = db.fetchall()[0]["idCategory"]
-    db.execute('select * from Asset where AssetCategory_idCategory=(%s)', [category_id])
+    db.execute('select * from Asset where AssetCategory_idCategory=(%s) order by name', [category_id])
     assets_in_category = db.fetchall()
     return render_template('browse.html',
                            nav_category_id=category_id,

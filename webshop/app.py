@@ -1,22 +1,20 @@
-from flask import Flask, g, render_template, request, flash, url_for, redirect
-from flask.ext.login import LoginManager, UserMixin, current_user, login_user, logout_user
+from flask import Flask, g, render_template
+import MySQLdb as mdb
+
+from flask.ext.login import LoginManager
 from browse import browse_page
 from signup import signup_page
 from login import login_page
 from db_utils import get_all_categories
-
-import MySQLdb as mdb
 from user import User
 
 app = Flask(__name__)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-
 app.register_blueprint(browse_page)
 app.register_blueprint(signup_page)
 app.register_blueprint(login_page)
-
 
 HOST = 'localhost'
 DEBUG = True
@@ -25,9 +23,11 @@ USERNAME = 'little-webshop'
 PASSWORD = 'little-webshop-password-123'
 DATABASE = 'little_webshop'
 
+
 @login_manager.user_loader
 def load_user(id):
     return User.get(id)
+
 
 def connect_db():
     return mdb.connect(host=HOST, port=2222, user=USERNAME, passwd=PASSWORD, db=DATABASE)
@@ -41,9 +41,11 @@ def before_request():
     except Exception as e:
         print e
 
+
 @login_manager.user_loader
 def load_user(userid):
-	return User.get(userid)
+    return User.get(userid)
+
 
 @app.teardown_request
 def teardown_request(exception):
@@ -65,6 +67,7 @@ def about():
 def home():
     db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
     return render_template('home.html', all_category_rows=get_all_categories(db))
+
 
 if __name__ == '__main__':
     app.secret_key = SECRET_KEY

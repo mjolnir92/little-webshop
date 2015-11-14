@@ -83,6 +83,12 @@
                          height="100">
                 </a>
             </td>
+            <!--Basket-->
+            <td>
+                <form action="{{ url_for('.delete_asset', categoryName=nav_category_name, idAsset=asset_id ) }}">
+                    <button class="btn btn-primary" type="submit">Add to basket</button>
+                </form>
+            </td>
             <!-- Remove asset -->
             {% if current_user.admin %}
             <td>
@@ -103,10 +109,8 @@
 
     </table>
 
-
     {% else %}
     This category is empty.
-
     <br>
 
     <form action="{{ url_for('.delete_category', categoryName=nav_category_name, idAssetCategory=nav_category_id ) }}"
