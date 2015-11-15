@@ -31,10 +31,6 @@
             <td style="text-align:left">
                 <button class="btn btn-warning" type="submit"><span class=btn-symbol>&#x21bb;</span></button>
             </td>
-            <td><input class="form-control" size="12" type="text" name="text-name" value="{{ asset_name.capitalize() }}"></td>
-            <td>{% include 'browse_category_selector.html' %}</td>
-            <td><input class="form-control" size="5" type="text" name="text-price" value="{{ asset_price }}"></td>
-            <td><input class="form-control" size="5" type="text" name="text-amount" value="{{ asset_amount }}"></td>
             <td>
                 <input class="form-control" type="text" name="text-imagePath" value="{{ asset_image }}">
                 <br>
@@ -42,9 +38,14 @@
                     <img border="0"
                          alt="{{asset_name}}"
                          src="{{asset_image}}"
-                         height="100">
+                         width="100px">
                 </a>
             </td>
+            <td><input class="form-control" size="12" type="text" name="text-name" value="{{ asset_name.capitalize() }}"></td>
+            <td>{% include 'browse_category_selector.html' %}</td>
+            <td><input class="form-control" size="10" type="text" name="text-price" value="{{ asset_price }}"></td>
+            <td><input class="form-control" size="10" type="text" name="text-amount" value="{{ asset_amount }}"></td>
+
 
         </form>
         <td>
