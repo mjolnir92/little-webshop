@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="table-responsive">
+<div class="table-responsive basket">
 
     <h2 class="sub-header">Basket</h2>
 
@@ -10,13 +10,14 @@
         <thead>
         <tr>
 
-            <th></th>
-            <th>Name</th>
-            <th>Available</th>
-            <th>Order amount</th>
-            <th>Price</th>
-            <th>Sum</th>
-            <th></th>
+        <th></th>
+        <th>Product</th>
+        <th></th>
+        <th>Available</th>
+        <th style="text-align:right">Order amount</th>
+        <th style="text-align:right">Price</th>
+        <th width="10%" style="text-align:right">Sum</th>
+        <th width="10%" style="text-align:right"></th>
 
         </tr>
         </thead>
@@ -31,31 +32,35 @@
         {% set asset_price = asset['price'] %}
         {% set asset_id = asset['idAsset'] %}
         {% set asset_image = asset['imagePath'].decode('utf-8') %}
-        <tr  >
-            <td width="140px">
+        <tr>
+            <td width="15%">
                 <a href="{{asset_image}}">
                     <img border="0"
                          alt="{{asset_name}}"
                          src="{{asset_image}}"
-                         width="100px">
+                         width="50px">
                 </a>
             </td>
-            <td><b>{{ asset_name.capitalize() }}</b></td>
-            <td>{{ asset_amount }}</td>
+            <td width="10%"><b>{{ asset_name.capitalize() }}</b></td>
+            <td width="10%"></td>
+            <td width="10%">{{ asset_amount }}</td>
+            <td>
 
-            <td class="col-md-2">
                 <form action="{{ url_for('.update_basket_asset', user_id=current_user.user_id, asset_id=asset_id ) }}" method="POST">
+
                     <div class="input-group">
                         <input type="text" name="text-amount" class="form-control" placeholder="{{ order_amount }}" required>
-                        <span class="input-group-btn"><button class="btn btn-primary " type="submit"><span class=btn-symbol>&#x21bb;</span></button></span>
+                        <span  class="input-group-btn">
+                            <button class="btn btn-primary " type="submit"><span class=btn-symbol>&#x21bb;</span></button>
+                        </span>
                     </div>
+
                 </form>
+
             </td>
-
-
-            <td>{{ asset_price }}</td>
-            <td>{{ order_sum }}</td>
-            <td style="text-align:right">
+            <td width="20%" style="text-align:right">{{ asset_price }}</td>
+            <td width="10%" style="text-align:right">{{ order_sum }}</td>
+            <td class="col-xs-10" width="10%"  style="text-align:right">
                 <form action="{{ url_for('.delete_basket_asset', user_id=current_user.user_id, asset_id=asset_id ) }}" method="POST">
                     <button class="btn btn-danger" type="submit"><b>X</b></button>
                 </form>
@@ -72,10 +77,11 @@
             <td></td>
             <td></td>
             <td></td>
-            <td><b> Total: <br><span style="font-size:20px;">{{total_price}}</span></b></td>
-            <td style="text-align:right">
+            <td></td>
+            <td  width="10%" style="text-align:right"><b> Total: <br><span style="font-size:20px;">{{total_price}}</span></b></td>
+            <td width="10%" style="text-align:right">
                 <form action="" method="POST">
-                    <button class="btn btn-primary" type="submit"><b>Check out</b></button>
+                    <button class="btn btn-primary" type="submit"><b>Checkout</b></button>
                 </form>
             </td>
 

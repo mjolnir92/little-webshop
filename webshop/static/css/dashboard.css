@@ -81,13 +81,14 @@ body {
 .nav-sidebar button {
   margin-right: 15px;
 }
+
+
 /*
  * Main content
  */
 
 .main {
   padding: 20px;
-
 }
 @media (min-width: 768px) {
   .main {
@@ -98,7 +99,6 @@ body {
 .main .page-header {
   margin-top: 0;
 }
-
 
 /*
  * Placeholder dashboard ideas
@@ -117,4 +117,23 @@ body {
 .placeholder img {
   display: inline-block;
   border-radius: 50%;
+}
+
+/*
+ * Custom stuff
+ */
+.btn-symbol { font-family: Lucida Sans Unicode; }
+
+.navbar-inverse .navbar-brand { color: #ffffff; }
+
+ul li form{margin-left:10px;}
+
+.basket .input-group .form-control {
+    position: relative;
+    z-index: 2;
+    float: none;
+    width: auto;
+    margin-bottom: 0px;
+    min-width: 2;
+    max-width: 60px;
 }
