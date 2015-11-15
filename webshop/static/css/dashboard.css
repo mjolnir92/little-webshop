@@ -79,9 +79,10 @@ body {
 }
 .nav-sidebar input[type="text"] {
   margin-left: 15px;
-  max-width: 140px;
 }
-
+.nav-sidebar button {
+  margin-right: 15px;
+}
 /*
  * Main content
  */

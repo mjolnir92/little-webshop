@@ -21,7 +21,7 @@
         </td>
         <!--Basket-->
         <td style="text-align:right">
-            <form action=".">
+            <form action="{{ url_for('basket_page.add_asset', user_id=current_user.user_id, asset_id=asset_id) }}" method="POST">
                 <button class="btn btn-primary" type="submit">Add to basket</button>
             </form>
         </td>

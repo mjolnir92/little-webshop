@@ -16,7 +16,6 @@ def login(show_message=False):
 
 @login_page.route('/login', methods=['POST'])
 def login_post():
-    print "post"
     user = User.get(request.form['text-username'])
     if user and user.password == request.form['text-password']:
         login_user(user)

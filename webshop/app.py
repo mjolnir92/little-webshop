@@ -5,6 +5,7 @@ from flask.ext.login import LoginManager
 from browse import browse_page
 from signup import signup_page
 from login import login_page
+from basket import basket_page
 from db_utils import get_all_categories
 from user import User
 
@@ -15,6 +16,7 @@ login_manager.init_app(app)
 app.register_blueprint(browse_page)
 app.register_blueprint(signup_page)
 app.register_blueprint(login_page)
+app.register_blueprint(basket_page)
 
 HOST = 'localhost'
 DEBUG = True

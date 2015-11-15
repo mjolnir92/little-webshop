@@ -53,14 +53,14 @@ CREATE TABLE IF NOT EXISTS `little_webshop`.`Asset` (
 ENGINE = InnoDB;
 
 
-DROP TABLE IF EXISTS `little_webshop`.`Order` ;
+DROP TABLE IF EXISTS `little_webshop`.`Basket` ;
 
-CREATE TABLE IF NOT EXISTS `little_webshop`.`Order` (
-  `idOrder` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `little_webshop`.`Basket` (
+  `idBasket` INT NOT NULL AUTO_INCREMENT,
   `dateTime` DATETIME NULL,
   `status` INT NULL,
   `User_idUser` INT NOT NULL,
-  PRIMARY KEY (`idOrder`),
+  PRIMARY KEY (`idBasket`),
   INDEX `fk_Order_Customer_idx` (`User_idUser` ASC),
   CONSTRAINT `fk_Order_Customer`
     FOREIGN KEY (`User_idUser`)
@@ -70,19 +70,19 @@ CREATE TABLE IF NOT EXISTS `little_webshop`.`Order` (
 ENGINE = InnoDB;
 
 
-DROP TABLE IF EXISTS `little_webshop`.`OrderRow` ;
+DROP TABLE IF EXISTS `little_webshop`.`BasketRow` ;
 
-CREATE TABLE IF NOT EXISTS `little_webshop`.`OrderRow` (
-  `idOrderRow` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `little_webshop`.`BasketRow` (
+  `idBasketRow` INT NOT NULL AUTO_INCREMENT,
   `amount` INT NULL,
-  `Order_idOrder` INT NOT NULL,
+  `Basket_idBasket` INT NOT NULL,
   `Asset_idAsset` INT NOT NULL,
-  PRIMARY KEY (`idOrderRow`),
-  INDEX `fk_OrderItem_Order1_idx` (`Order_idOrder` ASC),
+  PRIMARY KEY (`idBasketRow`),
+  INDEX `fk_OrderItem_Order1_idx` (`Basket_idBasket` ASC),
   INDEX `fk_OrderItem_Asset1_idx` (`Asset_idAsset` ASC),
   CONSTRAINT `fk_OrderItem_Order1`
-    FOREIGN KEY (`Order_idOrder`)
-    REFERENCES `little_webshop`.`Order` (`idOrder`)
+    FOREIGN KEY (`Basket_idBasket`)
+    REFERENCES `little_webshop`.`Basket` (`idBasket`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_OrderItem_Asset1`

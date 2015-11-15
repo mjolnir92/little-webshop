@@ -13,7 +13,7 @@
 
             <td style="text-align:right">
                 <form action="{{ url_for('.add_asset', category_id=nav_category_id) }}">
-                    <button style="width:8em;" class="btn btn-success" type="submit">Add item</button>
+                    <button class="btn btn-success" type="submit"><b>&#xff0b;</b></button>
                 </form>
             </td>
         </form>
@@ -37,6 +37,7 @@
             <td>
                 <input type="text" name="text-imagePath" value="{{ asset_image }}">
                 <br>
+                <br>
                 <a href="{{asset_image}}">
                     <img border="0"
                          alt="{{asset_name}}"
@@ -47,25 +48,23 @@
             <!--Update asset button -->
             <td style="text-align:right">
                 <button style="width:8em;" class="btn btn-warning" type="submit">Update</button>
-
-                <br>
-                <br>
-
-                <!--Basket button-->
-                <form action="">
-                    <button style="width:8em;" class="btn btn-primary" type="submit">Add to basket</button>
-                </form>
-
-                <br>
-                <br>
-
-                <!-- Remove asset button -->
-                <form action="{{ url_for('.delete_asset', category_id=nav_category_id, asset_id=asset_id ) }}"
-                      method="POST">
-                    <button style="width:8em;" class="btn btn-danger" type="submit">Remove</button>
-                </form>
-            </td>
         </form>
+        <br>
+        <br>
+        <!--Basket button-->
+        <form action="{{ url_for('basket_page.add_asset', user_id=current_user.user_id, asset_id=asset_id) }}" method="POST">
+            <button style="width:8em;" class="btn btn-primary" type="submit">Add to basket</button>
+        </form>
+
+        <br>
+
+        <!-- Remove asset button -->
+        <form action="{{ url_for('.delete_asset', category_id=nav_category_id, asset_id=asset_id ) }}"
+              method="POST">
+            <button class="btn btn-danger" type="submit"><b>X</b></button>
+        </form>
+        <br>
+        </td>
 
 
         </form>
