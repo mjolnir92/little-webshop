@@ -1,8 +1,9 @@
 import time
 
-from flask import Blueprint, render_template, g, request
+from flask import Blueprint, render_template, g, request, abort
 import MySQLdb as mdb
-import math
+
+from flask.ext.login import current_user
 
 from db_utils import get_all_categories
 
@@ -17,14 +18,30 @@ BasketStatus = enum('OPEN', 'PROCESSING', 'SENT', 'DELIVERED')
 basket_page = Blueprint('basket_page', __name__, template_folder='templates')
 
 
+def user_id_valid(user_id):
+    return long(current_user.user_id) == long(user_id)
+
+
+@basket_page.route('/checkout/<user_id>', defaults={'user_id': None, 'basket_id': None}, methods=['POST'])
+@basket_page.route('/checkout/<user_id>/<basket_id>', methods=['POST'])
+def checkout(user_id=None, basket_id=None):
+    if not user_id_valid(user_id):
+        abort(401)
+
+
+    return display_basket(user_id)
+
+
 @basket_page.route('/basket/<user_id>', defaults={'user_id': None})
 @basket_page.route('/basket/<user_id>')
-def display_basket(user_id=None, order_id=None):
-    # TODO: auth
-    open_basket = get_open_basket(user_id)
+def display_basket(user_id=None):
+    if not user_id_valid(user_id):
+        abort(401)
 
+    open_basket = get_open_basket(user_id)
+    basket_id = open_basket['idBasket']
     db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
-    db.execute('select * from BasketRow where Basket_idBasket=%s', [open_basket['idBasket']])
+    db.execute('select * from BasketRow where Basket_idBasket=%s', [basket_id])
     open_basket_rows = db.fetchall()
 
     # Append the Asset rows to the Basket rows
@@ -38,7 +55,7 @@ def display_basket(user_id=None, order_id=None):
         basket_total_sum += basket_row['asset_order_sum']
         # Back order
         if asset['amount'] - basket_row['amount'] < 0:
-            basket_row['back_order'] =  abs(asset['amount'] - basket_row['amount'])
+            basket_row['back_order'] = abs(asset['amount'] - basket_row['amount'])
             basket_back_orders = True
         else:
             basket_row['back_order'] = 0
@@ -46,6 +63,7 @@ def display_basket(user_id=None, order_id=None):
     return render_template('basket.html',
                            all_category_rows=get_all_categories(db),
                            basket=open_basket_rows,
+                           basket_id=basket_id,
                            basket_shipping=basket_shipping,
                            basket_total_sum=basket_total_sum + basket_shipping,
                            basket_back_orders=basket_back_orders)
@@ -54,7 +72,9 @@ def display_basket(user_id=None, order_id=None):
 @basket_page.route('/delete_basket_asset/<user_id>', defaults={'user_id': None, 'asset_id': None}, methods=['POST'])
 @basket_page.route('/delete_basket_asset/<user_id>/<asset_id>', methods=['POST'])
 def delete_basket_asset(user_id, asset_id):
-    # TODO: auth, check asset_id
+    if not user_id_valid(user_id):
+        abort(401)
+
     open_basket = get_open_basket(user_id)
     db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
     db.execute('delete from BasketRow where Basket_idBasket=%s and Asset_idAsset=%s', [open_basket['idBasket'], asset_id])
@@ -65,7 +85,9 @@ def delete_basket_asset(user_id, asset_id):
 @basket_page.route('/update_basket_asset/<user_id>', defaults={'user_id': None, 'asset_id': None}, methods=['POST'])
 @basket_page.route('/update_basket_asset/<user_id>/<asset_id>', methods=['POST'])
 def update_basket_asset(user_id, asset_id):
-    # TODO: auth, check asset_id
+    if not user_id_valid(user_id):
+        abort(401)
+
     open_basket = get_open_basket(user_id)
     db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
     open_basket_id = open_basket['idBasket']
@@ -82,7 +104,9 @@ def update_basket_asset(user_id, asset_id):
 @basket_page.route('/basket_add/<user_id>', defaults={'user_id': None, 'asset_id': None}, methods=['POST'])
 @basket_page.route('/basket_add/<user_id>/<asset_id>', methods=['POST'])
 def add_asset(user_id, asset_id):
-    # TODO: auth, check asset_id
+    if not user_id_valid(user_id):
+        abort(401)
+
     open_basket = get_open_basket(user_id)
     db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
     db.execute('select * from BasketRow where Basket_idBasket=%s', [open_basket['idBasket']])

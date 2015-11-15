@@ -120,7 +120,7 @@
             </td>
 
             <td width="10%" style="text-align:right">
-                <form action="" method="POST">
+                <form action="{{ url_for('.checkout', user_id=current_user.user_id, basket_id=basket_id ) }}" method="POST">
                     <button class="btn btn-primary" type="submit"><b>Checkout</b></button>
                 </form>
             </td>
