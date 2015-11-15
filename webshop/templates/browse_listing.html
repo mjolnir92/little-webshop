@@ -8,17 +8,18 @@
     {% set asset_id = category_asset['idAsset'] %}
     {% set asset_image = category_asset['imagePath'].decode('utf-8') %}
     <tr>
-        <td><b>{{ asset_name.capitalize() }}</b></td>
-        <td>{{ category_asset["price"] }}</td>
-        <td>{{ category_asset["amount"] }}</td>
-        <td>
+        <td width="15%">
             <a href="{{asset_image}}">
                 <img border="0"
                      alt="{{asset_name}}"
                      src="{{asset_image}}"
-                     height="100">
+                     width="100px">
             </a>
         </td>
+        <td><b>{{ asset_name.capitalize() }}</b></td>
+        <td>{{ category_asset["price"] }}</td>
+        <td>{{ category_asset["amount"] }}</td>
+
         <!--Basket-->
         <td style="text-align:right">
             <form action="{{ url_for('basket_page.add_asset', user_id=current_user.user_id, asset_id=asset_id) }}" method="POST">

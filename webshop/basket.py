@@ -2,6 +2,7 @@ import time
 
 from flask import Blueprint, render_template, g, request
 import MySQLdb as mdb
+import math
 
 from db_utils import get_all_categories
 
@@ -27,13 +28,27 @@ def display_basket(user_id=None, order_id=None):
     open_basket_rows = db.fetchall()
 
     # Append the Asset rows to the Basket rows
-    total_price = 0
-    for row in open_basket_rows:
-        db.execute('select * from Asset where idAsset=%s', [row['Asset_idAsset']])
-        row['asset'] = db.fetchall()[0]
-        row['order_sum'] = row['amount'] * row['asset']['price']
-        total_price += row['order_sum']
-    return render_template('basket.html', all_category_rows=get_all_categories(db), basket=open_basket_rows, total_price=total_price)
+    basket_total_sum = 0
+    basket_back_orders = False
+    for basket_row in open_basket_rows:
+        db.execute('select * from Asset where idAsset=%s', [basket_row['Asset_idAsset']])
+        asset = basket_row['asset'] = db.fetchall()[0]
+        # Prices
+        basket_row['asset_order_sum'] = basket_row['amount'] * asset['price']
+        basket_total_sum += basket_row['asset_order_sum']
+        # Back order
+        if asset['amount'] - basket_row['amount'] < 0:
+            basket_row['back_order'] =  abs(asset['amount'] - basket_row['amount'])
+            basket_back_orders = True
+        else:
+            basket_row['back_order'] = 0
+    basket_shipping = 50.0
+    return render_template('basket.html',
+                           all_category_rows=get_all_categories(db),
+                           basket=open_basket_rows,
+                           basket_shipping=basket_shipping,
+                           basket_total_sum=basket_total_sum + basket_shipping,
+                           basket_back_orders=basket_back_orders)
 
 
 @basket_page.route('/delete_basket_asset/<user_id>', defaults={'user_id': None, 'asset_id': None}, methods=['POST'])
@@ -42,7 +57,6 @@ def delete_basket_asset(user_id, asset_id):
     # TODO: auth, check asset_id
     open_basket = get_open_basket(user_id)
     db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
-    print [open_basket['idBasket'], asset_id]
     db.execute('delete from BasketRow where Basket_idBasket=%s and Asset_idAsset=%s', [open_basket['idBasket'], asset_id])
     db.connection.commit()
     return display_basket(user_id)
@@ -55,8 +69,11 @@ def update_basket_asset(user_id, asset_id):
     open_basket = get_open_basket(user_id)
     db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
     open_basket_id = open_basket['idBasket']
+    amount = long(request.form['text-amount'])
+    if amount < 1:
+        amount = 1
     db.execute('update BasketRow set amount=%s where Basket_idBasket=%s and Asset_idAsset=%s',
-               [request.form['text-amount'], open_basket_id, asset_id])
+               [amount, open_basket_id, asset_id])
     db.connection.commit()
 
     return display_basket(user_id)

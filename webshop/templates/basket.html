@@ -1,24 +1,24 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="table-responsive basket">
+<div class="table-responsive">
 
     <h2 class="sub-header">Basket</h2>
 
-
-    <table class="table table-striped">
+    <table class="table table-striped basket">
         <thead>
         <tr>
-
-        <th></th>
-        <th>Product</th>
-        <th></th>
-        <th>Available</th>
-        <th style="text-align:right">Order amount</th>
-        <th style="text-align:right">Price</th>
-        <th width="10%" style="text-align:right">Sum</th>
-        <th width="10%" style="text-align:right"></th>
-
+            <th></th>
+            <th>Product</th>
+            <th></th>
+            <th style="text-align:right">Available</th>
+            <th style="text-align:right">Order amount</th>
+            {% if basket_back_orders %}
+            <th>Back ordered</th>
+            {% endif %}
+            <th style="text-align:right">Price</th>
+            <th width="10%" style="text-align:right">Sum</th>
+            <th width="10%" style="text-align:right"></th>
         </tr>
         </thead>
 
@@ -26,12 +26,14 @@
         {% for basket_row in basket %}
         {% set asset = basket_row['asset']%}
         {% set order_amount = basket_row['amount']%}
-        {% set order_sum = basket_row['order_sum']%}
+        {% set back_order = basket_row['back_order']%}
+        {% set order_sum = basket_row['asset_order_sum']%}
         {% set asset_amount = asset['amount'] %}
         {% set asset_name = asset['name'].decode('utf-8') %}
         {% set asset_price = asset['price'] %}
         {% set asset_id = asset['idAsset'] %}
         {% set asset_image = asset['imagePath'].decode('utf-8') %}
+
         <tr>
             <td width="15%">
                 <a href="{{asset_image}}">
@@ -43,24 +45,31 @@
             </td>
             <td width="10%"><b>{{ asset_name.capitalize() }}</b></td>
             <td width="10%"></td>
-            <td width="10%">{{ asset_amount }}</td>
+            {% if back_order > 0 %}
+            <td class="text-warning" width="10%" style="text-align:right">{{ asset_amount }}</td>
+            {% else %}
+            <td class="text-success" width="10%" style="text-align:right">{{ asset_amount }}</td>
+            {% endif %}
             <td>
-
                 <form action="{{ url_for('.update_basket_asset', user_id=current_user.user_id, asset_id=asset_id ) }}" method="POST">
 
                     <div class="input-group">
                         <input type="text" name="text-amount" class="form-control" placeholder="{{ order_amount }}" required>
-                        <span  class="input-group-btn">
+                        <span class="input-group-btn">
                             <button class="btn btn-primary " type="submit"><span class=btn-symbol>&#x21bb;</span></button>
                         </span>
                     </div>
 
                 </form>
-
             </td>
+            {% if back_order > 0 %}
+            <td>{{back_order}}</td>
+            {% elif basket_back_orders%}
+            <td></td>
+            {% endif %}
             <td width="20%" style="text-align:right">{{ asset_price }}</td>
-            <td width="10%" style="text-align:right">{{ order_sum }}</td>
-            <td class="col-xs-10" width="10%"  style="text-align:right">
+            <td width="10%" style="text-align:right"><b>{{ order_sum }}</b></td>
+            <td class="col-xs-10" width="10%" style="text-align:right">
                 <form action="{{ url_for('.delete_basket_asset', user_id=current_user.user_id, asset_id=asset_id ) }}" method="POST">
                     <button class="btn btn-danger" type="submit"><b>X</b></button>
                 </form>
@@ -78,7 +87,38 @@
             <td></td>
             <td></td>
             <td></td>
-            <td  width="10%" style="text-align:right"><b> Total: <br><span style="font-size:20px;">{{total_price}}</span></b></td>
+            {% if basket_back_orders %}
+            <td></td>
+            {% endif %}
+            <td width="10%" style="text-align:right">
+                <b>
+                    Shipping:
+                    <br>
+                    {{basket_shipping}}
+                </b>
+            </td>
+
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            {% if basket_back_orders %}
+            <td></td>
+            {% endif %}
+
+            <td width="10%" style="text-align:right">
+                <b>
+                    Total:
+                    <br>
+                    <span style="font-size:20px;">{{basket_total_sum}}</span>
+                </b>
+            </td>
+
             <td width="10%" style="text-align:right">
                 <form action="" method="POST">
                     <button class="btn btn-primary" type="submit"><b>Checkout</b></button>

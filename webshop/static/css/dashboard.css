@@ -137,3 +137,10 @@ ul li form{margin-left:10px;}
     min-width: 2;
     max-width: 60px;
 }
+
+.basket .table > tfoot > tr > td {
+  padding: 8px;
+  line-height: 1.42857143;
+  vertical-align: center;
+  border-top: 1px solid #ddd;
+}
