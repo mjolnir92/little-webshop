@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="table-responsive">
+
+    {% if error_message %}
+    <br>
+    <font color="red">{{error_message}}</font>
+    {% endif %}
+
+    {% set category_not_empty = nav_category_asset_row_list and nav_category_asset_row_list != () %}
+
+    <h2 class="sub-header">{{ nav_category_name.decode('utf-8').capitalize() }}</h2>
+
+    {% if current_user.admin %}
+    <form action="{{ url_for('.delete_category', category_id=nav_category_id ) }}" method="POST">
+        <button class="btn btn-danger" type="submit">Remove category</button>
+    </form>
+    {% include 'browse_listing_admin.html' %}
+
+    {% elif category_not_empty %}
+    {% include 'browse_listing.html' %}
+
+
+    {% else %}
+    This category is empty.
+
+
+    {% endif %}
+
+
+</div>
+
+{% endblock %}

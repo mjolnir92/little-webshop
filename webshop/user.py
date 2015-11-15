@@ -13,7 +13,7 @@ class UserNotFoundError(Exception):
 class User(UserMixin):
     def __init__(self, id):
         db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
-        db.execute('select password from Customer where login=(%s)', [id])
+        db.execute('select password from User where login=(%s)', [id])
         entries = db.fetchall()
         if not entries:
             raise UserNotFoundError()

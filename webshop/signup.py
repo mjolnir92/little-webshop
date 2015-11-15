@@ -9,7 +9,7 @@ signup_page = Blueprint('signup_page', __name__, template_folder='templates')
 @signup_page.route('/signup')
 def signup():
     db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
-    db.execute('select * from Customer order by idCustomer desc')
+    db.execute('select * from User order by idUser desc')
     rows = db.fetchall()
     return render_template('signup.html', all_category_rows=get_all_categories(db), rows=rows)
 
@@ -17,7 +17,7 @@ def signup():
 @signup_page.route('/signup', methods=['POST'])
 def signup_post():
     db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
-    statement_insert = 'insert into Customer ' \
+    statement_insert = 'insert into User ' \
                        '(login, password, firstName, lastName, streetAddress, postCode, postTown, phoneNr, email)' \
                        ' values ' \
                        '(%s, %s, %s, %s, %s, %s, %s, %s, %s)'
@@ -34,8 +34,5 @@ def signup_post():
                        request.form['text-phoneNr'],
                        request.form['text-email']
                    ])
-        db.connection.commit()
-    elif "button-clear" in request.form:
-        db.execute('delete from Customer')
         db.connection.commit()
     return signup()

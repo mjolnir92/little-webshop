@@ -8,7 +8,7 @@
             <td height="120"><input size="12" type="text" name="text-name"></td>
             <td>{% include 'browse_category_selector.html' %}</td>
             <td><input size="5" type="text" name="text-price"></td>
-            <td><input size="5" type="text" name="text-amountInStore"></td>
+            <td><input size="5" type="text" name="text-amount"></td>
             <td><input type="text" name="text-imagePath"></td>
 
             <td style="text-align:right">
@@ -23,7 +23,7 @@
     {% set asset_name = category_asset['name'].decode('utf-8') %}
     {% set asset_id = category_asset['idAsset'] %}
     {% set asset_price = category_asset['price'] %}
-    {% set asset_amount = category_asset['amountInStore'] %}
+    {% set asset_amount = category_asset['amount'] %}
     {% set asset_image = category_asset['imagePath'].decode('utf-8') %}
     <tr>
         <form action="{{ url_for('.update_asset', category_id=nav_category_id, asset_id=asset_id ) }}" method="POST">
@@ -32,7 +32,7 @@
             <td>{% include 'browse_category_selector.html' %}</td>
 
             <td><input size="5" type="text" name="text-price" value="{{ asset_price }}"></td>
-            <td><input size="5" type="text" name="text-amountInStore" value="{{ asset_amount }}"></td>
+            <td><input size="5" type="text" name="text-amount" value="{{ asset_amount }}"></td>
 
             <td>
                 <input type="text" name="text-imagePath" value="{{ asset_image }}">

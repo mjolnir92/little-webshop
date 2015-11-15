@@ -7,7 +7,7 @@ browse_page = Blueprint('browse_page', __name__, template_folder='templates')
 
 
 def validate_order_by(order_by):
-    if order_by in ('name', 'price', 'amountInStore'):
+    if order_by in ('name', 'price', 'amount'):
         return order_by
     return 'name'
 
@@ -27,17 +27,17 @@ def display_category(category_id=None, order_by='name', order='asc', error_messa
     except:
         category_id = None
     if not category_id:
-        db.execute('select * from AssetCategory order by categoryName asc limit 1')
+        db.execute('select * from Category order by name asc limit 1')
         first_category = db.fetchall()
         category_id = first_category[0]["idCategory"]
 
-    db.execute('select categoryName from AssetCategory where idCategory=(%s)', [category_id])
-    nav_category_name = db.fetchall()[0]['categoryName']
+    db.execute('select name from Category where idCategory=(%s)', [category_id])
+    nav_category_name = db.fetchall()[0]['name']
     nav_category_id = category_id
 
     order_by = validate_order_by(order_by)
     order = validate_order(order)
-    db.execute('select * from Asset where AssetCategory_idCategory=%s order by %s %s' % (nav_category_id, order_by, order))
+    db.execute('select * from Asset where Category_idCategory=%s order by %s %s' % (nav_category_id, order_by, order))
     nav_category_asset_row_list = db.fetchall()
     return render_template('browse.html',
                            error_message=error_message,
@@ -56,14 +56,14 @@ def update_asset(category_id, asset_id):
     db.execute('update Asset set '
                'name=%s, '
                'price=%s, '
-               'amountInStore=%s, '
+               'amount=%s, '
                'imagePath=%s, '
-               'AssetCategory_idCategory=%s '
+               'Category_idCategory=%s '
                'where idAsset=%s',
                [
                    request.form['text-name'],
                    request.form['text-price'],
-                   request.form['text-amountInStore'],
+                   request.form['text-amount'],
                    request.form['text-imagePath'],
                    request.form['select-category'],
                    asset_id
@@ -88,7 +88,7 @@ def delete_category(category_id):
     # TODO: admin
     try:
         db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
-        db.execute('delete from AssetCategory where idCategory=(%s)', [category_id])
+        db.execute('delete from Category where idCategory=(%s)', [category_id])
         db.connection.commit()
     except mdb.IntegrityError as e:
         return display_category(category_id, error_message="Category must be empty before removal.")
@@ -100,13 +100,13 @@ def add_asset(category_id):
     # TODO: admin
     db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
     db.execute('insert into Asset '
-               '(name, price, amountInStore, imagePath, AssetCategory_idCategory)'
+               '(name, price, amount, imagePath, Category_idCategory)'
                ' values '
                '(%s, %s, %s, %s, %s)',
                [
                    request.form['text-name'],
                    request.form['text-price'],
-                   request.form['text-amountInStore'],
+                   request.form['text-amount'],
                    request.form['text-imagePath'],
                    request.form['select-category']
                ])
@@ -115,13 +115,13 @@ def add_asset(category_id):
 
 
 @browse_page.route('/browse/add_category/<category_id>', methods=['POST'])
-def add_asset_category(category_id):
+def add_category(category_id):
     # TODO: admin
     if len(request.form['text-category_name']) > 0:
         db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
-        db.execute('insert into AssetCategory (categoryName) values (%s)', [request.form['text-category_name']])
+        db.execute('insert into Category (name) values (%s)', [request.form['text-category_name']])
         db.connection.commit()
-        db.execute('select * from AssetCategory order by idCategory desc limit 1')
+        db.execute('select * from Category order by idCategory desc limit 1')
         return display_category(str(db.fetchall()[0]['idCategory']))
 
     return display_category(category_id)
