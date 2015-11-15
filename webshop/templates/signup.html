@@ -2,66 +2,40 @@
 
 {% block content %}
 
-<h2 class="sub-header">Sign up</h2>
-<h3>Please enter your details:</h3>
-<form action="{{ url_for('.signup') }}" method="POST">
-    User name:<br>
-    <input type="text" name="text-login">
+<form class="form-signin" action="{{ url_for('.signup') }}" method="POST">
+    <h2 class="form-signin-heading">Sign up</h2>
+    {% if message %}
+    <font color="red">{{message}}<br></font>
+    {% endif %}
+    <label>User name: </label>
+    <input class="form-control" type="text" name="text-login">
     <br>
-    Password:<br>
-    <input type="password" name="text-password">
+    <label>Password: </label>
+    <input class="form-control" type="password" name="text-password">
     <br>
-    First name:<br>
-    <input type="text" name="text-firstName">
+    <label> First name: </label>
+    <input class="form-control" type="text" name="text-firstName">
     <br>
-    Last name:<br>
-    <input type="text" name="text-lastName">
+    <label>Last name: </label>
+    <input class="form-control" type="text" name="text-lastName">
     <br>
-    Street address:<br>
-    <input type="text" name="text-streetAddress">
+    <label> Street address: </label>
+    <input class="form-control" type="text" name="text-streetAddress">
     <br>
-    Postal code:<br>
-    <input type="text" name="text-postCode">
+    <label>Postal code: </label>
+    <input class="form-control" type="text" name="text-postCode">
     <br>
-    Town:<br>
-    <input type="text" name="text-postTown">
+    <label> Town: </label>
+    <input class="form-control" type="text" name="text-postTown">
     <br>
-    Phone number:<br>
-    <input type="text" name="text-phoneNr">
+    <label> Phone number: </label>
+    <input class="form-control" type="text" name="text-phoneNr">
     <br>
-    E-mail address:<br>
-    <input type="text" name="text-email">
+    <label> E-mail address: </label>
+    <input class="form-control" type="text" name="text-email">
     <br>
-    <input type="submit" name="button-save" value="Sign up">
-    <input type="submit" name="button-clear" value="Clear all">
+    <input class="btn btn-lg btn-primary btn-block" type="submit" name="button-save" value="Sign up">
 </form>
 <br>
-<table class="entries" border="1">
-    <tr>
-        <th>login</th>
-        <th>password</th>
-        <th>firstName</th>
-        <th>lastName</th>
-        <th>streetAddress</th>
-        <th>postCode</th>
-        <th>postTown</th>
-        <th>phoneNr</th>
-        <th>email</th>
-    </tr>
-    {% for row in rows %}
-    <tr>
-        <td>{{ row["login"].decode('utf-8') }}</td>
-        <td>{{ row["password"].decode('utf-8') }}</td>
-        <td>{{ row["firstName"].decode('utf-8') }}</td>
-        <td>{{ row["lastName"].decode('utf-8') }}</td>
-        <td>{{ row["streetAddress"].decode('utf-8') }}</td>
-        <td>{{ row["postCode"] }}</td>
-        <td>{{ row["postTown"].decode('utf-8') }}</td>
-        <td>{{ row["phoneNr"] }}</td>
-        <td>{{ row["email"].decode('utf-8') }}</td>
-    </tr>
-    {% else %}
 
-    {% endfor %}
-</table>
 {% endblock %}

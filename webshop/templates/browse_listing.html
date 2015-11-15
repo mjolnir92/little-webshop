@@ -9,7 +9,7 @@
     {% set asset_image = category_asset['imagePath'].decode('utf-8') %}
     <tr>
         <td><b>{{ asset_name.capitalize() }}</b></td>
-        <td>{{ category_asset["price"] }} kr</td>
+        <td>{{ category_asset["price"] }}</td>
         <td>{{ category_asset["amount"] }}</td>
         <td>
             <a href="{{asset_image}}">

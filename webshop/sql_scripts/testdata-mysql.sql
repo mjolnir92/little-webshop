@@ -73,8 +73,8 @@ VALUES ('Pork', 115, 11, 'https://dtgxwmigmg3gc.cloudfront.net/files/551a1067777
 
 
 INSERT INTO User (login, password, firstName, lastName, streetAddress, postCode, postTown, phoneNr, email, admin)
-VALUES ('a', 'a', 'Henrik', 'Hansson', 'Balderstensgatan', 2342, 'Falköping', 0766034933234, 'chefen@mincoolaaddress.com', 1);
+VALUES ('a', 'a', 'Admin', 'Hansson', 'Balderstensgatan', 2342, 'Falköping', 0766034933234, 'chefen@mincoolaaddress.com', 1);
 
 INSERT INTO User (login, password, firstName, lastName, streetAddress, postCode, postTown, phoneNr, email, admin)
-VALUES ('b', 'b', 'Daniel', 'Hansson', 'Storgatan', 42, 'Falköping', 076123433234, 'chefen@mincoolaaddress.com', 0);
+VALUES ('b', 'b', 'Johan', 'Hansson', 'Storgatan', 42, 'Falköping', 076123433234, 'chefen@mincoolaaddress.com', 0);
 

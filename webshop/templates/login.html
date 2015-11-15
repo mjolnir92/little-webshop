@@ -4,8 +4,8 @@
 
 <form action="{{ url_for('.login') }}" method="POST" class="form-signin">
     <h2 class="form-signin-heading">Sign in</h2>
-    {% if show_message %}
-    <font color="red">Wrong username or password!</font>
+    {% if message %}
+    <font color="red">{{message}}</font>
     {% endif %}
     <label for="inputEmail" class="sr-only">User name</label>
     <input type="text" name="text-username" id="inputEmail" class="form-control" placeholder="User name" required

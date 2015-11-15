@@ -9,9 +9,9 @@ login_page = Blueprint('login_page', __name__, template_folder='templates')
 
 
 @login_page.route('/login')
-def login(show_message=False):
+def login(message=None):
     db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
-    return render_template('login.html', all_category_rows=get_all_categories(db), show_message=show_message)
+    return render_template('login.html', all_category_rows=get_all_categories(db), message=message)
 
 
 @login_page.route('/login', methods=['POST'])
@@ -21,7 +21,7 @@ def login_post():
         login_user(user)
         return redirect(url_for('home'))
     else:
-        return login(show_message=True)
+        return login(message='Wrong username or password!')
 
 
 @login_page.route('/logout')
