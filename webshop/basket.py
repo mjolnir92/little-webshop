@@ -1,6 +1,6 @@
 import time
 
-from flask import Blueprint, render_template, g
+from flask import Blueprint, render_template, g, request
 import MySQLdb as mdb
 
 from db_utils import get_all_categories
@@ -45,6 +45,20 @@ def delete_basket_asset(user_id, asset_id):
     print [open_basket['idBasket'], asset_id]
     db.execute('delete from BasketRow where Basket_idBasket=%s and Asset_idAsset=%s', [open_basket['idBasket'], asset_id])
     db.connection.commit()
+    return display_basket(user_id)
+
+
+@basket_page.route('/update_basket_asset/<user_id>', defaults={'user_id': None, 'asset_id': None}, methods=['POST'])
+@basket_page.route('/update_basket_asset/<user_id>/<asset_id>', methods=['POST'])
+def update_basket_asset(user_id, asset_id):
+    # TODO: auth, check asset_id
+    open_basket = get_open_basket(user_id)
+    db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
+    open_basket_id = open_basket['idBasket']
+    db.execute('update BasketRow set amount=%s where Basket_idBasket=%s and Asset_idAsset=%s',
+               [request.form['text-amount'], open_basket_id, asset_id])
+    db.connection.commit()
+
     return display_basket(user_id)
 
 

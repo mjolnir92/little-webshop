@@ -1,4 +1,4 @@
-<select name="select-category">
+<select class="form-control" name="select-category">
     {% for row in all_category_rows %}
     {% set category_name = row['name'].decode('utf-8')%}
     {% set category_id = row['idCategory']%}

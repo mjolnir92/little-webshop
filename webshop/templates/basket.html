@@ -12,7 +12,7 @@
 
             <th></th>
             <th>Name</th>
-            <th>Amount in store</th>
+            <th>Available</th>
             <th>Order amount</th>
             <th>Price</th>
             <th>Sum</th>
@@ -31,23 +31,32 @@
         {% set asset_price = asset['price'] %}
         {% set asset_id = asset['idAsset'] %}
         {% set asset_image = asset['imagePath'].decode('utf-8') %}
-        <tr>
-            <td style="width:140px;">
+        <tr  >
+            <td width="140px">
                 <a href="{{asset_image}}">
                     <img border="0"
                          alt="{{asset_name}}"
                          src="{{asset_image}}"
-                         width="100">
+                         width="100px">
                 </a>
             </td>
             <td><b>{{ asset_name.capitalize() }}</b></td>
             <td>{{ asset_amount }}</td>
-            <td>{{ order_amount }}</td>
+
+            <td class="col-md-2">
+                <form action="{{ url_for('.update_basket_asset', user_id=current_user.user_id, asset_id=asset_id ) }}" method="POST">
+                    <div class="input-group">
+                        <input type="text" name="text-amount" class="form-control" placeholder="{{ order_amount }}" required>
+                        <span class="input-group-btn"><button class="btn btn-primary " type="submit"><span class=btn-symbol>&#x21bb;</span></button></span>
+                    </div>
+                </form>
+            </td>
+
+
             <td>{{ asset_price }}</td>
             <td>{{ order_sum }}</td>
             <td style="text-align:right">
-                <form action="{{ url_for('.delete_basket_asset', user_id=current_user.user_id, asset_id=asset_id ) }}"
-                      method="POST">
+                <form action="{{ url_for('.delete_basket_asset', user_id=current_user.user_id, asset_id=asset_id ) }}" method="POST">
                     <button class="btn btn-danger" type="submit"><b>X</b></button>
                 </form>
             </td>
@@ -63,8 +72,12 @@
             <td></td>
             <td></td>
             <td></td>
-            <td><b> Total: </b><br>{{total_price}}</td>
-            <td></td>
+            <td><b> Total: <br><span style="font-size:20px;">{{total_price}}</span></b></td>
+            <td style="text-align:right">
+                <form action="" method="POST">
+                    <button class="btn btn-primary" type="submit"><b>Check out</b></button>
+                </form>
+            </td>
 
         </tr>
         <tbody>

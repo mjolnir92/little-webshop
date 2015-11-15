@@ -6,6 +6,9 @@
     {% else %}
     {% set link=url_for('browse_page.display_category', category_id=nav_category_id, order_by='name', order='asc') %}
     {% endif %}
+    {% if current_user.admin %}
+    <th></th>
+    {% endif %}
     <th>
         <a href="{{ link }}">Name</a>
     </th>
@@ -32,5 +35,8 @@
     </th>
     <th>Image</th>
     <th></th>
+    {% if current_user.admin %}
+    <th></th>
+    {% endif %}
 </tr>
 </thead>

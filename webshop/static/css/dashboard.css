@@ -77,9 +77,7 @@ body {
   color: #fff;
   background-color: #428bca;
 }
-.nav-sidebar input[type="text"] {
-  margin-left: 15px;
-}
+
 .nav-sidebar button {
   margin-right: 15px;
 }
