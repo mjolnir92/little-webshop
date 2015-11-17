@@ -60,7 +60,13 @@ def display_basket(user_id=None):
         else:
             basket_row['back_order'] = 0
     basket_shipping = 50.0
+
+    db.execute('select * from Basket where User_idUser=%s and status<>%s', (user_id, BasketStatus.OPEN))
+    previous_basket_rows = db.fetchall()
+    print previous_basket_rows
+
     return render_template('basket.html',
+                           previous_basket_rows=previous_basket_rows,
                            all_category_rows=get_all_categories(db),
                            basket=open_basket_rows,
                            basket_id=basket_id,
