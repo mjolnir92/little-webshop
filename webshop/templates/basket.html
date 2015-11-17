@@ -13,7 +13,7 @@
             <th></th>
             <th style="text-align:right">Available</th>
             <th style="text-align:right">Order amount</th>
-            {% if basket_back_orders %}
+            {% if active_basket.has_back_orders %}
             <th>Back ordered</th>
             {% endif %}
             <th style="text-align:right">Price</th>
@@ -23,7 +23,7 @@
         </thead>
 
         <tbody>
-        {% for basket_row in basket %}
+        {% for basket_row in active_basket.rows %}
         {% set asset = basket_row['asset']%}
         {% set order_amount = basket_row['amount']%}
         {% set back_order = basket_row['back_order']%}
@@ -64,7 +64,7 @@
             </td>
             {% if back_order > 0 %}
             <td>{{back_order}}</td>
-            {% elif basket_back_orders%}
+            {% elif active_basket.has_back_orders%}
             <td></td>
             {% endif %}
             <td width="20%" style="text-align:right">{{ asset_price }}</td>
@@ -87,14 +87,14 @@
             <td></td>
             <td></td>
             <td></td>
-            {% if basket_back_orders %}
+            {% if active_basket.has_back_orders %}
             <td></td>
             {% endif %}
             <td width="10%" style="text-align:right">
                 <b>
                     Shipping:
                     <br>
-                    {{basket_shipping}}
+                    {{active_basket.shipping}}
                 </b>
             </td>
 
@@ -107,7 +107,7 @@
             <td></td>
             <td></td>
             <td></td>
-            {% if basket_back_orders %}
+            {% if active_basket.has_back_orders %}
             <td></td>
             {% endif %}
 
@@ -115,12 +115,12 @@
                 <b>
                     Total:
                     <br>
-                    <span style="font-size:20px;">{{basket_total_sum}}</span>
+                    <span style="font-size:20px;">{{active_basket.total_sum}}</span>
                 </b>
             </td>
 
             <td width="10%" style="text-align:right">
-                <form action="{{ url_for('.checkout', user_id=current_user.user_id, basket_id=basket_id ) }}" method="POST">
+                <form action="{{ url_for('.checkout', user_id=current_user.user_id, basket_id=active_basket.id ) }}" method="POST">
                     <button class="btn btn-primary" type="submit"><b>Checkout</b></button>
                 </form>
             </td>
@@ -129,6 +129,33 @@
         <tbody>
     </table>
 
+    <h2 class="sub-header">Previous orders</h2>
+
+    <table class="table table-striped basket">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for previous_basket in previous_baskets %}
+        <tr>
+            <td>
+                {% set dt = previous_basket.date_time%}
+                <a href="#">{{ dt.strftime("%d %B %Y") }} </a>
+            </td>
+            <td>
+                {{previous_basket.status_name}}
+            </td>
+        </tr>
+
+
+        {% else %}
+        {% endfor %}
+        </tbody>
+    </table>
 
 
 </div>
