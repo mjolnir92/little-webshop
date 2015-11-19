@@ -115,6 +115,7 @@ def update_basket_asset(user_id, asset_id):
 @basket_page.route('/basket_add/<user_id>', defaults={'user_id': None, 'asset_id': None}, methods=['POST'])
 @basket_page.route('/basket_add/<user_id>/<asset_id>', methods=['POST'])
 def add_asset(user_id, asset_id):
+
     if not user_id_valid(user_id):
         abort(401)
 
