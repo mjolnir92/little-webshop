@@ -8,7 +8,7 @@ class UserNotFoundError(Exception):
     pass
 
 
-# Simple user class base on UserMixin
+# Simple user class based on UserMixin
 # http://flask-login.readthedocs.org/en/latest/_modules/flask/ext/login.html#UserMixin
 class User(UserMixin):
     def __init__(self, login):
@@ -17,13 +17,19 @@ class User(UserMixin):
         entries = db.fetchall()
         if not entries:
             raise UserNotFoundError()
+        entry = entries[0]
         self.id = login
-        self.user_id = long(entries[0]['idUser'])
+        self.user_id = long(entry['idUser'])
         self.login = login
-        self.password = entries[0]['password']
-        self.first_name = entries[0]['firstName']
-        self.last_name = entries[0]['lastName']
-        self.admin = entries[0]['admin'] is 1
+        self.password = entry['password']
+        self.first_name = entry['firstName']
+        self.last_name = entry['lastName']
+        self.street_address = entry['streetAddress']
+        self.postal_code = entry['postCode']
+        self.postal_town = entry['postTown']
+        self.phone = entry['phoneNr']
+        self.email = entry['email']
+        self.admin = entry['admin'] is 1
 
     @classmethod
     def get(self, login):

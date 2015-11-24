@@ -1,4 +1,5 @@
 from flask import Flask, g, render_template
+from flask_mail import Mail
 import MySQLdb as mdb
 
 from flask.ext.login import LoginManager
@@ -10,6 +11,7 @@ from db_utils import get_all_categories
 from user import User
 
 app = Flask(__name__)
+
 login_manager = LoginManager()
 login_manager.init_app(app)
 
@@ -24,6 +26,16 @@ SECRET_KEY = 'IaWie5geraiciW6w'
 USERNAME = 'little-webshop'
 PASSWORD = 'little-webshop-password-123'
 DATABASE = 'little_webshop'
+
+MAIL_SERVER = 'smtp.gmail.com'
+MAIL_PORT = 465
+MAIL_USE_TLS = False
+MAIL_USE_SSL = True
+MAIL_USERNAME = 'dazieGh3@gmail.com'
+MAIL_PASSWORD = ''
+
+app.config.from_object(__name__)
+mail = Mail(app)
 
 
 @login_manager.user_loader
@@ -40,6 +52,7 @@ def before_request():
     """ This is run when any page is requested """
     try:
         g.db = connect_db()
+        g.mail = mail
     except Exception as e:
         print e
 
@@ -73,5 +86,5 @@ def home():
 
 if __name__ == '__main__':
     app.secret_key = SECRET_KEY
-    # app.run(debug=True, host='192.168.1.2', port=5000)
-    app.run(debug=True, host='127.0.0.1', port=5000)
+    app.run(debug=True, host='192.168.1.2', port=5000)
+    # app.run(debug=True, host='127.0.0.1', port=5000)
