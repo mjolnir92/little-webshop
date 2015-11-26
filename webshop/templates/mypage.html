@@ -6,6 +6,11 @@
 	<h1>My page</h1>
 	<p class="lead">
 		Welcome {{ current_user.first_name }}!
+		{% if current_user.admin %}
+		You are loged in as administrator.
+		{% else %}
+		You are loged in as customer.
+		{% endif %}
 	</p>
 </div>
 
