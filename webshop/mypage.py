@@ -7,4 +7,5 @@ mypage_page = Blueprint('mypage_page', __name__, template_folder='templates')
 
 @mypage_page.route('/mypage')
 def mypage():
+	db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
 	return render_template('mypage.html', all_category_rows=get_all_categories(db))
