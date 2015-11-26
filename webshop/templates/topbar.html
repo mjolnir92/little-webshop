@@ -16,7 +16,7 @@
                 <li><a href="{{ url_for('about') }}">About</a></li>
 
                 {% if current_user.is_authenticated %}
-                <li><a href="#">{{ current_user.first_name }}</a></li>
+                <li><a href="{{ url_for('my-page_page.my-page') }}">{{ current_user.first_name }}</a></li>
                 <li><a href="{{ url_for('basket_page.display_basket', user_id=current_user.user_id) }}">Basket</a></li>
                 <li><a href="{{ url_for('login_page.logout') }}">Sign out</a></li>
 

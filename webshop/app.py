@@ -7,6 +7,7 @@ from browse import browse_page
 from signup import signup_page
 from login import login_page
 from basket import basket_page
+from my-page import my-page_page
 from db_utils import get_all_categories
 from user import User
 
@@ -19,6 +20,7 @@ app.register_blueprint(browse_page)
 app.register_blueprint(signup_page)
 app.register_blueprint(login_page)
 app.register_blueprint(basket_page)
+app.register_blueprint(my-page_page)
 
 HOST = 'localhost'
 DEBUG = True
