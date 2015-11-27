@@ -20,19 +20,19 @@ def edit_post():
 		'(login, password, firstName, lastName, streetAddress, postCode, postTown, phoneNr, email)' \
 		' values ' \
 		'(%s, %s, %s, %s, %s, %s, %s, %s, %s)'
-    try:
-        db.execute(statement_insert,
-                   [
-                       request.form['text-login'],
-                       request.form['text-password'],
-                       request.form['text-firstName'],
-                       request.form['text-lastName'],
-                       request.form['text-streetAddress'],
-                       request.form['text-postCode'],
-                       request.form['text-postTown'],
-                       request.form['text-phoneNr'],
-                       request.form['text-email']
-                   ])
+	try:
+		db.execute(statement_insert,
+			[
+			request.form['text-login'],
+			request.form['text-password'],
+			request.form['text-firstName'],
+			request.form['text-lastName'],
+			request.form['text-streetAddress'],
+			request.form['text-postCode'],
+			request.form['text-postTown'],
+			request.form['text-phoneNr'],
+			request.form['text-email']
+			])
         db.connection.commit()
     except mdb.IntegrityError:
         return signup(message='User name is taken!')
