@@ -30,19 +30,19 @@ def edit_post():
 		'email=%s '
 		'where idUser=%s',
 		[
-		request.form['text-login'],
-		request.form['text-password'],
-		request.form['text-firstName'],
-		request.form['text-lastName'],
-		request.form['text-streetAddress'],
-		request.form['text-postCode'],
-		request.form['text-postTown'],
-		request.form['text-phoneNr'],
-		request.form['text-email'],
-		current_user.user_id
+			request.form['text-login'],
+			request.form['text-password'],
+			request.form['text-firstName'],
+			request.form['text-lastName'],
+			request.form['text-streetAddress'],
+			request.form['text-postCode'],
+			request.form['text-postTown'],
+			request.form['text-phoneNr'],
+			request.form['text-email'],
+			current_user.user_id
 		]
 		)
-	db.connection.commit()
+		db.connection.commit()
 	except mdb.IntegrityError:
 		return signup(message='User name is taken!')
 	return redirect(url_for('mypage_page.mypage'))
