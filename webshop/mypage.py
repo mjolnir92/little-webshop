@@ -43,3 +43,4 @@ def edit_post():
         db.connection.commit()
     except mdb.IntegrityError:
         return signup(message='User name is taken!')
+    return redirect(url_for('mypage_page.mypage'))
