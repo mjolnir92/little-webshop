@@ -16,23 +16,30 @@ def mypage(message=None):
 def edit_post():
 	db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
 
-	statement_insert = 'update User set ' \
-		'(login, password, firstName, lastName, streetAddress, postCode, postTown, phoneNr, email)' \
-		' values ' \
-		'(%s, %s, %s, %s, %s, %s, %s, %s, %s)'
 	try:
-		db.execute(statement_insert,
-			[
-			request.form['text-login'],
-			request.form['text-password'],
-			request.form['text-firstName'],
-			request.form['text-lastName'],
-			request.form['text-streetAddress'],
-			request.form['text-postCode'],
-			request.form['text-postTown'],
-			request.form['text-phoneNr'],
-			request.form['text-email']
-			])
+		'update User set '
+		'login=%s, '
+		'password=%s, '
+		'firstName=%s, '
+		'lastName=%s, '
+		'streetAddress=%s, '
+		'postCode=%s, '
+		'postTown=%s, '
+		'phoneNr=%s, '
+		'email=%s '
+		'where idUser=%s',
+		[
+		request.form['text-login'],
+		request.form['text-password'],
+		request.form['text-firstName'],
+		request.form['text-lastName'],
+		request.form['text-streetAddress'],
+		request.form['text-postCode'],
+		request.form['text-postTown'],
+		request.form['text-phoneNr'],
+		request.form['text-email'],
+		current_user.user_id
+		])
         db.connection.commit()
     except mdb.IntegrityError:
         return signup(message='User name is taken!')
