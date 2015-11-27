@@ -39,7 +39,7 @@ def edit_post():
 		request.form['text-phoneNr'],
 		request.form['text-email'],
 		current_user.user_id
-		])
+		]
         db.connection.commit()
     except mdb.IntegrityError:
         return signup(message='User name is taken!')
