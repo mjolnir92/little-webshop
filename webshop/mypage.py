@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, g, request, url_for
+from flask import Blueprint, render_template, g, request, redirect, url_for
 import MySQLdb as mdb
 from flask.ext.login import current_user
 from db_utils import get_all_categories
