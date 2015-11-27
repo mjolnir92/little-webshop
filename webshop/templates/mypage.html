@@ -14,4 +14,40 @@
 	</p>
 </div>
 
+<form class="form-signin" action="{{ url_for('.edit_post') }}" method="POST">
+    <h2 class="form-signin-heading">Edit user information</h2>
+    {% if message %}
+    <font color="red">{{message}}<br></font>
+    {% endif %}
+    <label>User name: </label>
+    <input class="form-control" type="text" name="text-login">
+    <br>
+    <label>Password: </label>
+    <input class="form-control" type="password" name="text-password">
+    <br>
+    <label> First name: </label>
+    <input class="form-control" type="text" name="text-firstName">
+    <br>
+    <label>Last name: </label>
+    <input class="form-control" type="text" name="text-lastName">
+    <br>
+    <label> Street address: </label>
+    <input class="form-control" type="text" name="text-streetAddress">
+    <br>
+    <label>Postal code: </label>
+    <input class="form-control" type="text" name="text-postCode">
+    <br>
+    <label> Town: </label>
+    <input class="form-control" type="text" name="text-postTown">
+    <br>
+    <label> Phone number: </label>
+    <input class="form-control" type="text" name="text-phoneNr">
+    <br>
+    <label> E-mail address: </label>
+    <input class="form-control" type="text" name="text-email">
+    <br>
+    <input class="btn btn-lg btn-primary btn-block" type="submit" name="button-save" value="Save changes">
+</form>
+<br>
+
 {% endblock %}
