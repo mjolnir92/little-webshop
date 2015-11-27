@@ -17,6 +17,7 @@ def edit_post():
 	db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
 
 	try:
+		db.execute(
 		'update User set '
 		'login=%s, '
 		'password=%s, '
@@ -40,6 +41,7 @@ def edit_post():
 		request.form['text-email'],
 		current_user.user_id
 		]
+		)
         db.connection.commit()
     except mdb.IntegrityError:
         return signup(message='User name is taken!')
