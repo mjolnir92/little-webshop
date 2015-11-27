@@ -8,9 +8,9 @@ mypage_page = Blueprint('mypage_page', __name__, template_folder='templates')
 @mypage_page.route('/mypage')
 def mypage(message=None):
 	db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
-	#db.execute('select * from User order by idUser desc')
-	#rows = db.fetchall()
-	return render_template('mypage.html', all_category_rows=get_all_categories(db), message=message)
+	db.execute('select * from User order by idUser desc')
+	rows = db.fetchall()
+	return render_template('mypage.html', all_category_rows=get_all_categories(db), rows=rows, message=message)
 
 @mypage_page.route('/mypage', methods=['POST'])
 def edit_post():
