@@ -36,5 +36,3 @@ def edit_post():
         db.connection.commit()
     except mdb.IntegrityError:
         return signup(message='User name is taken!')
-	except mdb.IntegrityError:
-		return signup(message='User name is taken!')
