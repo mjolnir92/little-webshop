@@ -8,7 +8,7 @@ mypage_page = Blueprint('mypage_page', __name__, template_folder='templates')
 @mypage_page.route('/mypage')
 def mypage(message=None):
 	db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
-	db.execute('select * from User order by idUser desc')
+	#db.execute('select * from User order by idUser desc')
 	rows = db.fetchall()
 	return render_template('mypage.html', all_category_rows=get_all_categories(db), rows=rows, message=message)
 
@@ -42,7 +42,7 @@ def edit_post():
 		current_user.user_id
 		]
 		)
-        db.connection.commit()
-    except mdb.IntegrityError:
-        return signup(message='User name is taken!')
-    return redirect(url_for('mypage_page.mypage'))
+	db.connection.commit()
+	except mdb.IntegrityError:
+		return signup(message='User name is taken!')
+	return redirect(url_for('mypage_page.mypage'))
