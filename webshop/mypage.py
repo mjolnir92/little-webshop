@@ -27,7 +27,8 @@ def edit_post():
 		'postCode=%s, '
 		'postTown=%s, '
 		'phoneNr=%s, '
-		'email=%s '
+		'email=%s, '
+		'admin=0 '
 		'where idUser=%s',
 		[
 			request.form['text-login'],
