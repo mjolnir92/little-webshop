@@ -1,0 +1,38 @@
+{% if current_user.is_authenticated %}
+<form action="{{ url_for('.add_review', user_id=current_user.user_id, asset_id=asset_id ) }}" method="POST">
+
+    {% if current_user_review %}
+    <td width="7%" style="text-align:left">
+        <button class="btn btn-warning" type="submit"><span class=btn-symbol>&#x21bb;</span></button>
+    </td>
+    {% else %}
+    <td width="7%" style="text-align:left">
+        <button class="btn btn-success" type="submit"><span class=btn-symbol><b>&#xff0b;</b></span></button>
+    </td>
+    {% endif %}
+
+    <td width="15%">You</td>
+
+    {% if current_user_review %}
+    {% set review = current_user_review%}
+    <td width="10%"><input class="form-control" size="4" type="number" name="text-rating" value="{{ review.rating }}"></td>
+    <td><input class="form-control" size="12" type="text" name="text-comment" value="{{ review.comment }}"></td>
+    {% else %}
+    <td width="10%"><input class="form-control" size="4" type="number" name="text-rating" value=""></td>
+    <td><input class="form-control" size="12" type="text" name="text-comment" value=""></td>
+    {% endif %}
+</form>
+
+
+{% if current_user_review %}
+<form action="{{ url_for('.remove_review', user_id=current_user.user_id, asset_id=asset_id ) }}" method="POST">
+    <td width="7%" style="text-align:right">
+        <button class="btn btn-danger" type="submit"><b>X</b></button>
+    </td>
+</form>
+{% else %}
+<td></td>
+{% endif %}
+
+
+{% endif %}

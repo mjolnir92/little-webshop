@@ -213,3 +213,8 @@ margin-right:-20px;
     vertical-align: center;
     border-top: 1px solid #ddd;
 }
+
+.borderless tbody tr td, .borderless tbody tr th, .borderless thead tr th {
+    vertical-align: middle;
+    border: none;
+}

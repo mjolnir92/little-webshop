@@ -8,6 +8,7 @@ from signup import signup_page
 from login import login_page
 from basket import basket_page
 from mypage import mypage_page
+from asset_page import asset_page
 from db_utils import get_all_categories
 from user import User
 
@@ -21,6 +22,7 @@ app.register_blueprint(signup_page)
 app.register_blueprint(login_page)
 app.register_blueprint(basket_page)
 app.register_blueprint(mypage_page)
+app.register_blueprint(asset_page)
 
 HOST = 'localhost'
 DEBUG = True
@@ -34,7 +36,7 @@ MAIL_PORT = 465
 MAIL_USE_TLS = False
 MAIL_USE_SSL = True
 MAIL_USERNAME = 'dazieGh3@gmail.com'
-MAIL_PASSWORD = ''
+MAIL_PASSWORD = 'neiPh6ao'
 
 app.config.from_object(__name__)
 mail = Mail(app)
@@ -88,5 +90,6 @@ def home():
 
 if __name__ == '__main__':
     app.secret_key = SECRET_KEY
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    # app.run(debug=True, host='0.0.0.0', port=5000)
     # app.run(debug=True, host='127.0.0.1', port=5000)
+    app.run(debug=True, host='192.168.1.2', port=5000)

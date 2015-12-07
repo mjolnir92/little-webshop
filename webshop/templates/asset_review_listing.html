@@ -1,0 +1,57 @@
+<!--Reviews-->
+<h3>Reviews:</h3>
+
+<table class="table table-striped">
+
+    <!--Reviews table header-->
+    <thead>
+    {% if current_user.is_authenticated %}
+    <tr>
+        <th></th>
+        <th>Reviewer</th>
+        <th>Rating</th>
+        <th>Comment</th>
+        <th></th>
+    </tr>
+    {% else %}
+    <tr>
+        <th>Reviewer</th>
+        <th>Rating</th>
+        <th>Comment</th>
+    </tr>
+    {% endif %}
+    </thead>
+
+    <!--Reviews table body-->
+    <tbody>
+
+    {% if current_user.is_authenticated %}
+
+    {% include 'asset_review_add.html' %}
+
+    {% for review in reviews %}
+        <tr>
+            <td></td>
+            <td width="15%">{{ review.user_name }}</td>
+            <td width="10%">{{ review.rating }}</td>
+            <td>{{ review.comment }}</td>
+            <td></td>
+        </tr>
+    {% endfor %}
+
+    {% else %}
+    <!--Not authenticated-->
+    {% for review in reviews %}
+        <tr>
+            <td width="15%">{{ review.user_name }}</td>
+            <td width="10%">{{ review.rating }}</td>
+            <td>{{ review.comment }}</td>
+        </tr>
+    {% endfor %}
+
+    {% endif %}
+
+    </tbody>
+
+</table>
+

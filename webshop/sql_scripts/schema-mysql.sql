@@ -2,8 +2,10 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
+
 CREATE SCHEMA IF NOT EXISTS `little_webshop` DEFAULT CHARACTER SET utf8 ;
 USE `little_webshop` ;
+
 
 DROP TABLE IF EXISTS `little_webshop`.`User` ;
 
@@ -41,7 +43,8 @@ CREATE TABLE IF NOT EXISTS `little_webshop`.`Asset` (
   `name` VARCHAR(45) NOT NULL,
   `price` FLOAT NULL,
   `amount` INT NULL,
-  `imagePath` VARCHAR(200) NULL,
+  `imagePath` VARCHAR(500) NULL,
+  `description` VARCHAR(1000) NULL,
   `Category_idCategory` INT NOT NULL,
   PRIMARY KEY (`idAsset`),
   INDEX `fk_Asset_AssetCategory1_idx` (`Category_idCategory` ASC),
@@ -86,6 +89,30 @@ CREATE TABLE IF NOT EXISTS `little_webshop`.`BasketRow` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_OrderItem_Asset1`
+    FOREIGN KEY (`Asset_idAsset`)
+    REFERENCES `little_webshop`.`Asset` (`idAsset`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+DROP TABLE IF EXISTS `little_webshop`.`Review` ;
+
+CREATE TABLE IF NOT EXISTS `little_webshop`.`Review` (
+  `idReview` INT NOT NULL AUTO_INCREMENT,
+  `rating` INT NULL,
+  `comment` VARCHAR(1000) NULL,
+  `User_idUser` INT NOT NULL,
+  `Asset_idAsset` INT NOT NULL,
+  PRIMARY KEY (`idReview`),
+  INDEX `fk_Review_User1_idx` (`User_idUser` ASC),
+  INDEX `fk_Review_Asset1_idx` (`Asset_idAsset` ASC),
+  CONSTRAINT `fk_Review_User1`
+    FOREIGN KEY (`User_idUser`)
+    REFERENCES `little_webshop`.`User` (`idUser`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Review_Asset1`
     FOREIGN KEY (`Asset_idAsset`)
     REFERENCES `little_webshop`.`Asset` (`idAsset`)
     ON DELETE NO ACTION

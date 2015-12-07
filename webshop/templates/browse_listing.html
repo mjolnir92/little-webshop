@@ -48,7 +48,11 @@
                      width="100px">
             </a>
         </td>
-        <td><b>{{ asset_name.capitalize() }}</b></td>
+        <td>
+            <a href="{{url_for('asset_page.display_asset', asset_id=asset_id) }}">
+                <b>{{ asset_name.capitalize() }}</b>
+            </a>
+        </td>
         <td>{{ category_asset["price"] }}</td>
         <td>{{ category_asset["amount"] }}</td>
 

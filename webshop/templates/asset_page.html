@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+{% set asset_name = asset_row['name'].decode('utf-8') %}
+{% set asset_id = asset_row['idAsset'] %}
+{% set asset_image = asset_row['imagePath'].decode('utf-8') %}
+{% set asset_price = asset_row['price'] %}
+{% set asset_amount = asset_row['amount'] %}
+{% set asset_description = asset_row['description'] %}
+
+<div class="row">
+    <!--Asset information-->
+
+    <h2 class="sub-header">{{ nav_category_name.decode('utf-8').capitalize() }} > <b>{{asset_name}}</b></h2>
+    <br>
+    <a href="{{asset_image}}">
+        <img border="0"
+             alt="{{asset_name}}"
+             src="{{asset_image}}"
+             width="500px">
+    </a>
+    <br>
+
+    <table class="table borderless">
+        <td>
+            <h3><p class="lead">Price: {{asset_price}}</p></h3>
+        </td>
+        <td>
+            <h3><p class="lead">In stock: {{asset_amount}}</p></h3>
+        </td>
+        <!--Basket-->
+        <td style="text-align:right">
+            {% if current_user.is_authenticated %}
+            <form action="{{ url_for('basket_page.add_asset', user_id=current_user.user_id, asset_id=asset_id) }}" method="POST">
+                <button class="btn btn-primary" type="submit">Add to Basket</button>
+            </form>
+            {% else %}
+            <form action="{{ url_for('login_page.login') }}">
+                <button class="btn btn-primary" type="submit">Add to Basket</button>
+            </form>
+            {% endif%}
+        </td>
+    </table>
+    <h3>Description:</h3>
+
+    <p>{{asset_description}}</p>
+    {% if reviews %}
+    {% include 'asset_review_listing.html' %}
+    {% elif current_user.is_authenticated %}
+    <h3>Be the first to add a review!</h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th></th>
+            <th>Reviewer</th>
+            <th>Rating</th>
+            <th>Comment</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% include 'asset_review_add.html' %}
+        </tbody>
+    </table>
+
+
+    {% endif %}
+</div>
+
+
+{% endblock %}
