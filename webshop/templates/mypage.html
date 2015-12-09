@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="jumbotron">
-	<h1>My page</h1>
+	<h2>My page</h2>
 	<p class="lead">
 		Welcome {{ current_user.first_name }}!
 		{% if current_user.admin %}
@@ -20,31 +20,31 @@
     <font color="red">{{message}}<br></font>
     {% endif %}
     <label>User name: </label>
-    <input class="form-control" type="text" name="text-login">
+    <input class="form-control" type="text" name="text-login" value="{{ current_user.login }}">
     <br>
     <label>Password: </label>
     <input class="form-control" type="password" name="text-password">
     <br>
     <label> First name: </label>
-    <input class="form-control" type="text" name="text-firstName">
+    <input class="form-control" type="text" name="text-firstName"  value="{{ current_user.first_name }}">
     <br>
     <label>Last name: </label>
-    <input class="form-control" type="text" name="text-lastName">
+    <input class="form-control" type="text" name="text-lastName" value="{{ current_user.last_name }}">
     <br>
     <label> Street address: </label>
-    <input class="form-control" type="text" name="text-streetAddress">
+    <input class="form-control" type="text" name="text-streetAddress" value="{{ current_user.street_address }}">
     <br>
     <label>Postal code: </label>
-    <input class="form-control" type="text" name="text-postCode">
+    <input class="form-control" type="text" name="text-postCode" value="{{ current_user.postal_code }}">
     <br>
     <label> Town: </label>
-    <input class="form-control" type="text" name="text-postTown">
+    <input class="form-control" type="text" name="text-postTown" value="{{ current_user.postal_town }}">
     <br>
     <label> Phone number: </label>
-    <input class="form-control" type="text" name="text-phoneNr">
+    <input class="form-control" type="text" name="text-phoneNr" value="{{ current_user.phone }}">
     <br>
     <label> E-mail address: </label>
-    <input class="form-control" type="text" name="text-email">
+    <input class="form-control" type="text" name="text-email" value="{{ current_user.email }}">
     <br>
     <input class="btn btn-lg btn-primary btn-block" type="submit" name="button-save" value="Save changes">
 </form>

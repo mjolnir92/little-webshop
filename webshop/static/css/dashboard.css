@@ -218,3 +218,9 @@ margin-right:-20px;
     vertical-align: middle;
     border: none;
 }
+
+img.centered {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}

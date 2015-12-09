@@ -76,7 +76,7 @@
             <td>
                 <input class="form-control" type="text" name="text-imagePath" value="{{ asset_image }}">
                 <br>
-                <a href="{{asset_image}}">
+                <a href="{{url_for('asset_page.display_asset', asset_id=asset_id) }}">
                     <img border="0"
                          alt="{{asset_name}}"
                          src="{{asset_image}}"

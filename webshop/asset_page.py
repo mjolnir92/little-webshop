@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, g
+from flask import Blueprint, render_template, g, request
 import MySQLdb as mdb
 from db_utils import get_all_categories
 
@@ -16,6 +16,7 @@ class Review():
         user = db.fetchall()[0]
         self.user_name = user['firstName'] + " " + user['lastName']
         self.user_id = long(review_row['User_idUser'])
+
 
 def user_id_valid(user_id):
     return long(current_user.user_id) == long(user_id)
@@ -58,15 +59,29 @@ def display_asset(asset_id):
 def add_review(asset_id, user_id):
     if not user_id_valid(user_id):
         abort(401)
-    # TODO
-    print "adding review asset "+asset_id+" user "+user_id
+
+    db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
+    db.execute('select idReview from Review where User_idUser=(%s) and  Asset_idAsset=%s', [user_id, asset_id])
+    current_review = db.fetchall()
+
+    if not current_review:
+        db.execute('insert into Review (rating, comment, User_idUser, Asset_idAsset) values (%s,%s,%s,%s)',
+                   [request.form['text-rating'], request.form['text-comment'], user_id, asset_id])
+        db.connection.commit()
+    else:
+        db.execute('update Review set rating=%s, comment=%s where User_idUser=%s and Asset_idAsset=%s',
+                   [request.form['text-rating'], request.form['text-comment'], user_id, asset_id])
+        db.connection.commit()
+
     return display_asset(asset_id)
+
 
 @asset_page.route('/asset_remove_review/<asset_id>', defaults={'asset_id': None, 'user_id': None}, methods=['POST'])
 @asset_page.route('/asset_remove_review/<asset_id>/<user_id>', methods=['POST'])
 def remove_review(asset_id, user_id):
     if not user_id_valid(user_id):
         abort(401)
-    # TODO
-    print "removing review asset "+asset_id+" user "+user_id
+    db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
+    db.execute('delete from Review where User_idUser=%s and Asset_idAsset=%s', (user_id, asset_id))
+    db.connection.commit()
     return display_asset(asset_id)

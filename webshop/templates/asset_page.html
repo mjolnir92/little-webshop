@@ -15,7 +15,7 @@
     <h2 class="sub-header">{{ nav_category_name.decode('utf-8').capitalize() }} > <b>{{asset_name}}</b></h2>
     <br>
     <a href="{{asset_image}}">
-        <img border="0"
+        <img class="centered" border="0"
              alt="{{asset_name}}"
              src="{{asset_image}}"
              width="500px">
@@ -23,30 +23,41 @@
     <br>
 
     <table class="table borderless">
-        <td>
-            <h3><p class="lead">Price: {{asset_price}}</p></h3>
-        </td>
-        <td>
-            <h3><p class="lead">In stock: {{asset_amount}}</p></h3>
-        </td>
-        <!--Basket-->
-        <td style="text-align:right">
-            {% if current_user.is_authenticated %}
-            <form action="{{ url_for('basket_page.add_asset', user_id=current_user.user_id, asset_id=asset_id) }}" method="POST">
-                <button class="btn btn-primary" type="submit">Add to Basket</button>
-            </form>
-            {% else %}
-            <form action="{{ url_for('login_page.login') }}">
-                <button class="btn btn-primary" type="submit">Add to Basket</button>
-            </form>
-            {% endif%}
-        </td>
+        <tr>
+            <!--Price-->
+            <td width="10%"><p class="lead">Price:</p></td>
+            <td width="10%"><p class="lead"><b>{{asset_price}}</b></p></td>
+
+            <!--Basket-->
+            <td style="text-align:right">
+                {% if current_user.is_authenticated %}
+                <form action="{{ url_for('basket_page.add_asset', user_id=current_user.user_id, asset_id=asset_id) }}" method="POST">
+                    <button class="btn btn-primary" type="submit">Add to Basket</button>
+                </form>
+                {% else %}
+                <form action="{{ url_for('login_page.login') }}">
+                    <button class="btn btn-primary" type="submit">Add to Basket</button>
+                </form>
+                {% endif%}
+            </td>
+        </tr>
+        <tr>
+            <!--Amount-->
+            <td width="10%"><p class="lead">In stock:</p></td>
+            <td width="10%"><p class="lead"><b>{{asset_amount}}</b></p></td>
+        </tr>
     </table>
+
+    <!--Description-->
     <h3>Description:</h3>
 
     <p>{{asset_description}}</p>
-    {% if reviews %}
+
+    <!--Review listing-->
+    {% if reviews or current_user_review%}
+
     {% include 'asset_review_listing.html' %}
+
     {% elif current_user.is_authenticated %}
     <h3>Be the first to add a review!</h3>
     <table class="table table-striped">
@@ -64,9 +75,7 @@
         </tbody>
     </table>
 
-
     {% endif %}
 </div>
-
 
 {% endblock %}

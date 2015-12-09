@@ -41,7 +41,7 @@
     {% set asset_image = category_asset['imagePath'].decode('utf-8') %}
     <tr>
         <td width="15%">
-            <a href="{{asset_image}}">
+            <a href="{{url_for('asset_page.display_asset', asset_id=asset_id) }}">
                 <img border="0"
                      alt="{{asset_name}}"
                      src="{{asset_image}}"
