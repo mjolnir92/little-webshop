@@ -3,6 +3,10 @@ from flask import Flask, g, render_template
 from flask_mail import Mail
 import MySQLdb as mdb
 
+import sys
+reload(sys)
+sys.setdefaultencoding("utf-8")
+
 from flask.ext.login import LoginManager
 from browse import browse_page
 from signup import signup_page
