@@ -36,9 +36,9 @@
     <tbody>
     <!--Asset data-->
     {% for category_asset in nav_category_asset_row_list %}
-    {% set asset_name = category_asset['name'].decode('utf-8') %}
+    {% set asset_name = category_asset['name'] %}
     {% set asset_id = category_asset['idAsset'] %}
-    {% set asset_image = category_asset['imagePath'].decode('utf-8') %}
+    {% set asset_image = category_asset['imagePath'] %}
     <tr>
         <td width="15%">
             <a href="{{url_for('asset_page.display_asset', asset_id=asset_id) }}">

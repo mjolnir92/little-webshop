@@ -62,11 +62,11 @@
     </tr>
     <!--Asset data-->
     {% for category_asset in nav_category_asset_row_list %}
-    {% set asset_name = category_asset['name'].decode('utf-8') %}
+    {% set asset_name = category_asset['name'] %}
     {% set asset_id = category_asset['idAsset'] %}
     {% set asset_price = category_asset['price'] %}
     {% set asset_amount = category_asset['amount'] %}
-    {% set asset_image = category_asset['imagePath'].decode('utf-8') %}
+    {% set asset_image = category_asset['imagePath'] %}
     <tr>
         <form action="{{ url_for('.update_asset', category_id=nav_category_id, asset_id=asset_id ) }}" method="POST">
             <!--Update asset button -->

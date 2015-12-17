@@ -29,10 +29,10 @@
         {% set back_order = basket_row['back_order']%}
         {% set order_sum = basket_row['asset_order_sum']%}
         {% set asset_amount = asset['amount'] %}
-        {% set asset_name = asset['name'].decode('utf-8') %}
+        {% set asset_name = asset['name'] %}
         {% set asset_price = asset['price'] %}
         {% set asset_id = asset['idAsset'] %}
-        {% set asset_image = asset['imagePath'].decode('utf-8') %}
+        {% set asset_image = asset['imagePath'] %}
 
         <tr>
             <td width="15%">

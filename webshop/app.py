@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask import Flask, g, render_template
 from flask_mail import Mail
 import MySQLdb as mdb
@@ -91,5 +92,5 @@ def home():
 if __name__ == '__main__':
     app.secret_key = SECRET_KEY
     # app.run(debug=True, host='0.0.0.0', port=5000)
-    # app.run(debug=True, host='127.0.0.1', port=5000)
-    app.run(debug=True, host='192.168.1.2', port=5000)
+    app.run(debug=True, host='127.0.0.1', port=5000)
+    # app.run(debug=True, host='192.168.1.2', port=5000)

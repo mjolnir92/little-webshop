@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import time
 
 from flask import Blueprint, render_template, g, request, abort

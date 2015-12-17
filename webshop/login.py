@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask import Blueprint, render_template, request, g, redirect, url_for
 import MySQLdb as mdb
 

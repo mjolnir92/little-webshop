@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask import g
 import MySQLdb as mdb
 
@@ -22,13 +23,13 @@ class User(UserMixin):
         self.user_id = long(entry['idUser'])
         self.login = login
         self.password = entry['password']
-        self.first_name = entry['firstName'].decode('utf-8')
-        self.last_name = entry['lastName'].decode('utf-8')
-        self.street_address = entry['streetAddress'].decode('utf-8')
+        self.first_name = entry['firstName']
+        self.last_name = entry['lastName']
+        self.street_address = entry['streetAddress']
         self.postal_code = entry['postCode']
-        self.postal_town = entry['postTown'].decode('utf-8')
+        self.postal_town = entry['postTown']
         self.phone = entry['phoneNr']
-        self.email = entry['email'].decode('utf-8')
+        self.email = entry['email']
         self.admin = entry['admin'] is 1
 
     @classmethod

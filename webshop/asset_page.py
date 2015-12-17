@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask import Blueprint, render_template, g, request
 import MySQLdb as mdb
 from db_utils import get_all_categories
