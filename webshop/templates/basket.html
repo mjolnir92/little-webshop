@@ -132,22 +132,15 @@
     <h2 class="sub-header">Previous orders</h2>
     {% for previous_basket in previous_baskets %}
     <table class="table table-striped basket">
-        <thead>
-        <tr>
-            <th width="15%">Date</th>
-            <th>Status</th>
-        </tr>
-        </thead>
-
         <tbody>
 
         <tr>
-            <td width="20%">
+            <td width="25%">
                 {% set dt = previous_basket.date_time%}
-                <a href="{{ url_for('.display_basket', user_id=current_user.user_id, selected_prev_basket_id=previous_basket.id) }}">{{ dt.strftime("%d %B %Y, %H:%M") }}</a>
+                <a href="{{ url_for('.display_basket', user_id=current_user.user_id, selected_prev_basket_id=previous_basket.id) }}"><b>Order:</b> {{ dt.strftime("%d %B %Y, %H:%M") }}</a>
             </td>
             <td>
-                {{previous_basket.status_name}}
+                <b>Status:</b> {{previous_basket.status_name}}
             </td>
         </tr>
         {% if previous_basket.id|int == selected_prev_basket_id|int %}
@@ -172,7 +165,7 @@
             {% set asset_id = asset['idAsset'] %}
             {% set asset_image = asset['imagePath'] %}
             <tr>
-                <td width="20%">
+                <td width="25%">
                     <a href="{{asset_image}}">
                         <img border="0"
                              alt="{{asset_name}}"
