@@ -1,7 +1,7 @@
 # little-webshop
 Webshop project for school
 
-#### Requirements:
+#### Dependencies:
 * python 2
 * MySQL/MariaDB
 * mysql-python
