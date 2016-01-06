@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import time
 
 from flask import Blueprint, render_template, g, request, abort
@@ -85,9 +86,9 @@ def checkout(user_id=None, basket_id=None):
     return display_basket(user_id)
 
 
-@basket_page.route('/basket/<user_id>', defaults={'user_id': None})
-@basket_page.route('/basket/<user_id>')
-def display_basket(user_id=None):
+@basket_page.route('/basket/<user_id>', defaults={'user_id': None, 'selected_prev_basket_id': None})
+@basket_page.route('/basket/<user_id>/<selected_prev_basket_id>')
+def display_basket(user_id=None, selected_prev_basket_id=None):
     if not user_id_valid(user_id):
         abort(401)
     db = getattr(g, 'db', None).cursor(mdb.cursors.DictCursor)
@@ -100,6 +101,7 @@ def display_basket(user_id=None):
     return render_template('basket.html',
                            active_basket=active_basket,
                            previous_baskets=previous_baskets,
+                           selected_prev_basket_id=selected_prev_basket_id,
                            all_category_rows=get_all_categories(db))
 
 

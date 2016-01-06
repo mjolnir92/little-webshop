@@ -22,7 +22,7 @@
 
         {% for category in all_category_rows %}
 
-        {% set category_name = category['name'].decode('utf-8')%}
+        {% set category_name = category['name']%}
         {% set category_id = category['idCategory']%}
 
         {% if nav_category_id and category_id|int == nav_category_id|int %}

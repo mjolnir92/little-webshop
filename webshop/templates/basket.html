@@ -29,10 +29,10 @@
         {% set back_order = basket_row['back_order']%}
         {% set order_sum = basket_row['asset_order_sum']%}
         {% set asset_amount = asset['amount'] %}
-        {% set asset_name = asset['name'].decode('utf-8') %}
+        {% set asset_name = asset['name'] %}
         {% set asset_price = asset['price'] %}
         {% set asset_id = asset['idAsset'] %}
-        {% set asset_image = asset['imagePath'].decode('utf-8') %}
+        {% set asset_image = asset['imagePath'] %}
 
         <tr>
             <td width="15%">
@@ -130,33 +130,68 @@
     </table>
 
     <h2 class="sub-header">Previous orders</h2>
-
+    {% for previous_basket in previous_baskets %}
     <table class="table table-striped basket">
-        <thead>
-        <tr>
-            <th>Date</th>
-            <th>Status</th>
-        </tr>
-        </thead>
-
         <tbody>
-        {% for previous_basket in previous_baskets %}
+
         <tr>
-            <td>
+            <td width="25%">
                 {% set dt = previous_basket.date_time%}
-                <a href="#">{{ dt.strftime("%d %B %Y") }} </a>
+                <a href="{{ url_for('.display_basket', user_id=current_user.user_id, selected_prev_basket_id=previous_basket.id) }}"><b>Order:</b> {{ dt.strftime("%d %B %Y, %H:%M") }}</a>
             </td>
             <td>
-                {{previous_basket.status_name}}
+                <b>Status:</b> {{previous_basket.status_name}}
             </td>
         </tr>
+        {% if previous_basket.id|int == selected_prev_basket_id|int %}
+        <table class="table table-striped basket">
+            <thead>
+            <tr>
+                <th></th>
+                <th>Product</th>
+                <th style="text-align:right">Order amount</th>
+                <th style="text-align:right">Price</th>
+                <th style="text-align:right">Sum</th>
+            </tr>
+            </thead>
+            {% for basket_row in previous_basket.rows %}
+            {% set asset = basket_row['asset']%}
+            {% set order_amount = basket_row['amount']%}
+            {% set back_order = basket_row['back_order']%}
+            {% set order_sum = basket_row['asset_order_sum']%}
+            {% set asset_amount = asset['amount'] %}
+            {% set asset_name = asset['name'] %}
+            {% set asset_price = asset['price'] %}
+            {% set asset_id = asset['idAsset'] %}
+            {% set asset_image = asset['imagePath'] %}
+            <tr>
+                <td width="25%">
+                    <a href="{{asset_image}}">
+                        <img border="0"
+                             alt="{{asset_name}}"
+                             src="{{asset_image}}"
+                             width="50px">
+                    </a>
+                </td>
+                <td><b>{{ asset_name.capitalize() }}</b></td>
+                <td width="20%" style="text-align:right">{{ order_amount }}</td>
+                <td width="20%" style="text-align:right">{{ asset_price }}</td>
+                <td width="10%" style="text-align:right"><b>{{ order_sum }}</b></td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td width="10%" style="text-align:right"><b>Total: {{ previous_basket.total_sum }}</b></td>
+            </tr>
+        </table>
 
-
-        {% else %}
-        {% endfor %}
         </tbody>
     </table>
-
+    {% endif %}
+    {% endfor %}
 
 </div>
 

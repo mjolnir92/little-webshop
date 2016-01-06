@@ -2,9 +2,9 @@
 
 {% block content %}
 
-{% set asset_name = asset_row['name'].decode('utf-8') %}
+{% set asset_name = asset_row['name'] %}
 {% set asset_id = asset_row['idAsset'] %}
-{% set asset_image = asset_row['imagePath'].decode('utf-8') %}
+{% set asset_image = asset_row['imagePath'] %}
 {% set asset_price = asset_row['price'] %}
 {% set asset_amount = asset_row['amount'] %}
 {% set asset_description = asset_row['description'] %}
@@ -12,7 +12,7 @@
 <div class="row">
     <!--Asset information-->
 
-    <h2 class="sub-header">{{ nav_category_name.decode('utf-8').capitalize() }} > <b>{{asset_name}}</b></h2>
+    <h2 class="sub-header">{{ nav_category_name.capitalize() }} > <b>{{asset_name}}</b></h2>
     <br>
     <a href="{{asset_image}}">
         <img class="centered" border="0"

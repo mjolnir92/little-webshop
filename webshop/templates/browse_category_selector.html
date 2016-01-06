@@ -1,6 +1,6 @@
 <select class="form-control" name="select-category">
     {% for row in all_category_rows %}
-    {% set category_name = row['name'].decode('utf-8')%}
+    {% set category_name = row['name']%}
     {% set category_id = row['idCategory']%}
     {% if category_id|int == nav_category_id|int %}
     asdf
